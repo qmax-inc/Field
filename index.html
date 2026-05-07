@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q-MAX 人間道場：自己フィールド認定テスト</title>
+    <title>Q-MAX 人間道場：自己フィールド認定テスト【完全版】</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --qmax-blue: #1e3a5f; --qmax-orange: #f39c12; --bg-color: #f0f2f5; --card-bg: #ffffff; --text-color: #333; }
@@ -11,19 +11,20 @@
         header { background: linear-gradient(135deg, var(--qmax-blue), #2c5282); color: white; padding: 2rem 1rem; text-align: center; }
         .container { max-width: 800px; margin: -1.5rem auto 3rem auto; padding: 0 1rem; }
         .card { background: var(--card-bg); padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 2rem; display: none; }
-        .active { display: block !important; animation: fadeIn 0.5s; }
+        .active { display: block !important; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        h2 { color: var(--qmax-blue); border-bottom: 2px solid var(--qmax-orange); padding-bottom: 0.5rem; margin-top: 0; font-size: 1.3rem; }
+        h2 { color: var(--qmax-blue); border-bottom: 2px solid var(--qmax-orange); padding-bottom: 0.5rem; margin-top: 0; font-size: 1.2rem; }
+        .progress-bar { height: 4px; background: #ddd; margin-bottom: 1.5rem; border-radius: 2px; }
+        .progress-inner { height: 100%; background: var(--qmax-orange); width: 0%; transition: 0.3s; }
         select { width: 100%; padding: 1rem; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 2rem; }
-        .option-btn { display: block; width: 100%; text-align: left; padding: 1.2rem; margin-bottom: 0.8rem; border: 2px solid #edf2f7; border-radius: 8px; background: #f8fafc; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+        .option-btn { display: block; width: 100%; text-align: left; padding: 1rem; margin-bottom: 0.8rem; border: 2px solid #edf2f7; border-radius: 8px; background: #f8fafc; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
         .option-btn:hover { background-color: #ebf8ff; border-color: var(--qmax-orange); transform: translateX(5px); }
         .btn-primary { background: var(--qmax-orange); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; font-weight: bold; display: block; margin: 1.5rem auto; }
         .admin-section { margin-top: 5rem; padding: 2rem; border-top: 1px dashed #ccc; text-align: center; }
         .admin-btn { background: #718096; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; background: #fff; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background: #f4f4f4; }
-        .history-list { text-align: left; background: #fff; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
     </style>
 </head>
 <body>
@@ -55,70 +56,29 @@
         <button class="btn-primary" onclick="startTest()">診断を開始する</button>
     </div>
 
-    <!-- 質問1-4 (略: 前回のロジックを継承) -->
-    <div id="q1" class="card">
-        <h2>Q1：後輩が同じミスをした時のあなたの脳内は？</h2>
-        <div class="options">
-            <button class="option-btn" onclick="nextStep(1, 'B')">またか…最悪だ。私が謝りに行かなきゃ。</button>
-            <button class="option-btn" onclick="nextStep(1, 'A')">怒ったら嫌われるかな。傷つけたくないな。</button>
-            <button class="option-btn" onclick="nextStep(1, 'C')">普通、メモ取るでしょ。なんでできないの？</button>
-            <button class="option-btn" onclick="nextStep(1, 'D')">説明する時間が無駄。自分でやるのが早い。</button>
-            <button class="option-btn" onclick="nextStep(1, 'E')">ミスは本人の選択の結果。事実を分析しよう。</button>
-            <button class="option-btn" onclick="nextStep(1, 'F')">これは彼が考え方を磨く絶好のチャンスだ。</button>
-        </div>
-    </div>
-    <div id="q2" class="card">
-        <h2>Q2：会社から新しい評価制度が導入された。あなたの本音は？</h2>
-        <div class="options">
-            <button class="option-btn" onclick="nextStep(2, 'A')">みんなが納得してるなら波風立てずに合わせる。</button>
-            <button class="option-btn" onclick="nextStep(2, 'B')">ハードルが上がる…。自分はやっていけるかな。</button>
-            <button class="option-btn" onclick="nextStep(2, 'C')">基準を満たさない人間は淘汰されて当然だ。</button>
-            <button class="option-btn" onclick="nextStep(2, 'D')">業務の成果に直結しない制度は非効率だ。</button>
-            <button class="option-btn" onclick="nextStep(2, 'E')">この制度を使って自分の人生をどう豊かにできるだろうか。</button>
-            <button class="option-btn" onclick="nextStep(2, 'F')">この制度の意図を汲み取り、後輩が納得できる形に翻訳して伝えよう。</button>
-        </div>
-    </div>
-    <div id="q3" class="card">
-        <h2>Q3：多忙な時に後輩から「教えてください」と相談されたら？</h2>
-        <div class="options">
-            <button class="option-btn" onclick="nextStep(3, 'A')">断ると嫌われるから、無理してでも今教える。</button>
-            <button class="option-btn" onclick="nextStep(3, 'B')">教えないと後で不満を抱かれる。困ったな。</button>
-            <button class="option-btn" onclick="nextStep(3, 'C')">自分で調べれば？ それぐらいの主体性は持ってほしい。</button>
-            <button class="option-btn" onclick="nextStep(3, 'D')">手順書を渡すから読んでおいて。それ以外は後で聞く。</button>
-            <button class="option-btn" onclick="nextStep(3, 'E')">15分自分で調べて、1時間後に仮説を持ってきて。</button>
-            <button class="option-btn" onclick="nextStep(3, 'F')">今の彼なら全部教えず、重要となるポイントだけ教えよう。</button>
-        </div>
-    </div>
-    <div id="q4" class="card">
-        <h2>Q4：会議で、後輩から自分の意見に「反対」された時の反応は？</h2>
-        <div class="options">
-            <button class="option-btn" onclick="finishTest('A')">嫌な思いをさせたかな。私の言い方が悪かったかもしれない。</button>
-            <button class="option-btn" onclick="finishTest('B')">否定されるなんてショックだ。もう発言したくない。</button>
-            <button class="option-btn" onclick="finishTest('C')">私の経験が正しい。君はまだ何も分かっていない。</button>
-            <button class="option-btn" onclick="finishTest('D')">感情論はどうでもいい。データだけで話をしよう。</button>
-            <button class="option-btn" onclick="finishTest('E')">面白い視点だ。その意見をどう成果に繋げられるか検討しよう。</button>
-            <button class="option-btn" onclick="finishTest('F')">反対意見が出るのは良い組織。もっと議論を深めていこう。</button>
-        </div>
+    <!-- 質問10問 -->
+    <div id="quiz-container">
+        <!-- JSで動的に表示 -->
     </div>
 
     <!-- 結果表示 -->
     <div id="result" class="card">
         <h2 id="res-name-display" style="text-align:center;"></h2>
         <div id="result-title" style="font-size:1.5rem; font-weight:bold; color:var(--qmax-blue); text-align:center; margin-bottom:1rem;"></div>
-        <p id="result-status"></p>
-        <div style="border-left:5px solid var(--qmax-orange); padding-left:1rem; margin-top:1rem;">
-            <strong>【処方箋】</strong><br><span id="result-prescription"></span>
+        <p id="result-status" style="background:#fdfaf6; padding:1rem; border-radius:8px;"></p>
+        <div style="border-left:5px solid var(--qmax-orange); padding-left:1rem; margin-top:1.5rem;">
+            <strong>【人間道場からの処方箋】</strong><br><span id="result-prescription"></span>
         </div>
         <button class="btn-primary" onclick="location.reload()">もう一度診断する</button>
     </div>
 
     <!-- 管理者セクション -->
     <div class="admin-section">
-        <button class="admin-btn" onclick="unlockAdmin()">メンバー特性一覧（管理者用）</button>
+        <button class="admin-btn" onclick="unlockAdmin()">管理者メニュー</button>
         <div id="admin-content" style="display:none; margin-top:2rem;">
             <h3>新人メンバー特性一覧</h3>
             <table>
-                <tr><th>名前</th><th>研修時判定タイプ</th></tr>
+                <tr><th>名前</th><th>判定タイプ</th></tr>
                 <tr><td>夏目 雅矢</td><td>ハリネズミ（他責・攻撃）</td></tr>
                 <tr><td>岡 玲良</td><td>ハリネズミ/社欠（独善・力押し）</td></tr>
                 <tr><td>宮里 使永那</td><td>チワワ（迎合・依存）</td></tr>
@@ -128,89 +88,121 @@
                 <tr><td>福原 奏来</td><td>ねこ（合理的・損得）</td></tr>
                 <tr><td>王 藝暁</td><td>ねこ/社欠（自己完結・アラート不足）</td></tr>
             </table>
-
-            <h3 style="margin-top:2rem;">テスト実施履歴（この端末のみ）</h3>
-            <div id="history-data" class="history-list">履歴がありません。</div>
-            <button class="admin-btn" style="margin-top:1rem; background:#c53030;" onclick="clearHistory()">履歴を削除</button>
+            <h3 style="margin-top:2rem;">実施履歴</h3>
+            <div id="history-data" style="text-align:left; background:#fff; padding:1rem; border-radius:8px; border:1px solid #ddd;">履歴がありません。</div>
         </div>
     </div>
 </div>
 
 <script>
-    var scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    var currentStep = 0;
     var selectedName = "";
+    var scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+
+    const questions = [
+        { q: "Q1：後輩が同じミスをした時のあなたの脳内は？", 
+          o: { B: "またか…最悪だ。私が謝りに行かなきゃ。", A: "怒ったら嫌われるかな。傷つけたくないな。", C: "普通、メモ取るでしょ。なんでできないの？", D: "説明する時間が無駄。自分でやるのが早い。", E: "ミスは本人の選択。事実を分析しよう。", F: "これは彼が考え方を磨く絶好のチャンスだ。" } 
+        },
+        { q: "Q2：新しい評価制度が導入された。あなたの本音は？", 
+          o: { A: "みんなが納得してるなら波風立てずに合わせる。", B: "ハードルが上がる…。自分はやっていけるかな。", C: "基準を満たさない人間は淘汰されて当然だ。", D: "業務に関係ない制度は非効率。勝手にすればいい。", E: "この制度を使って人生をどう豊かにできるだろうか。", F: "制度の意図を汲み取り、後輩に納得できる形で翻訳しよう。" } 
+        },
+        { q: "Q3：多忙な時に後輩から「教えてください」と相談されたら？", 
+          o: { A: "断ると嫌われるから、無理してでも今教える。", B: "教えないと後で不満を抱かれる、困ったな。", C: "自分で調べれば？ それぐらいの主体性は持ってほしい。", D: "手順書を投げるから読んで。それ以外は後で。", E: "15分自分で調べて、1時間後に仮説を持ってきて。", F: "今の彼なら全部教えず、重要ポイントだけ教えよう。" } 
+        },
+        { q: "Q4：会議で、後輩から自分の意見に「反対」された時の反応は？", 
+          o: { A: "嫌な思いさせたかな。私の言い方が悪かったか。", B: "否定されるなんてショック。もう発言したくない。", C: "私の経験が正しい。君はまだ何も分かっていない。", D: "感情論はどうでもいい。データだけで話をしよう。", E: "面白い視点だ。成果に繋げられるか検討しよう。", F: "反対が出るのは良い組織。もっと議論を深めよう。" } 
+        },
+        { q: "Q5：締切直前、後輩の作業が大幅に遅れている。後輩は「自分でやりたい」と言うが間に合わない。どうする？", 
+          o: { A: "彼の気持ちを尊重し、一緒に残業して手伝う。", B: "どうしよう、間に合わなかったら私の責任だ…と焦る。", C: "「だから言っただろ！」と叱り、力ずくで終わらせる。", D: "「もういい」と突き放し、自分が全部巻き取って完遂させる。", E: "論理的に「間に合わない事実」を突きつけ、作業を分割する。", F: "最優先の『センターピン』を特定し、そこだけ彼に完遂させる。" } 
+        },
+        { q: "Q6：後輩が会社の方針に不満を漏らしている。信頼関係を築くための対応は？", 
+          o: { A: "「君の気持ちはよく分かるよ」と全力で同調する。", B: "不満を聞いて、自分も不安になってしまう。", C: "「決まりなんだから四の五の言うな」と一蹴する。", D: "「不満があるなら外で試せばいい」と突き放す。", E: "「不満は自由だが、この環境でどう動くか」を冷静に話す。", F: "不満の奥にある期待を汲み取り、長期的な『大善』を説く。" } 
+        },
+        { q: "Q7：後輩が「AとBどちらが正解ですか？」と答えを求めてきた。", 
+          o: { A: "彼が迷わないよう、すぐに「Aだよ」と教えてあげる。", B: "自分も迷ってしまい「どっちだろうね」と一緒に悩む。", C: "「それぐらい自分で考えろ」と突き放す。", D: "「論理的にはAだ」と最短ルートの回答だけ渡す。", E: "「君の人生の選択だ。自分で決めて責任を取れ」と促す。", F: "あえて答えず「2ヶ月後の理想から見て、どちらがセンターピンかな？」と問う。" } 
+        },
+        { q: "Q8：後輩が同じミスを繰り返した。イラ立ち（負の感情）を覚えた時の行動は？", 
+          o: { A: "自分の感情を押し殺し、より優しく接しようとする。", B: "あからさまに落胆し、無言の圧力をかけてしまう。", C: "怒りに任せて「何度言えば分かるんだ！」と詰める。", D: "感情を完全にシャットアウトし、事務的な修正だけ行う。", E: "イラ立ちをメタ認知し、ミスの根本原因をデータで分析する。", F: "怒りを自覚した上で、あえて厳しく「君の市場価値」について説く。" } 
+        },
+        { q: "Q9：自分が後輩の前で重大な判断ミスをしてしまった。どう振る舞う？", 
+          o: { A: "全力で謝罪し、汚名返上のために後輩の仕事まで引き受ける。", B: "権威が傷つくのを恐れ、なんとか理由をつけて正当化する。", C: "「環境が悪かった」「指示が曖昧だった」と他責にする。", D: "ミスを無かったことにし、速やかに次のタスクへ移動する。", E: "淡々とミスを報告し、修正プランを論理的に提示する。", F: "非を認め「今の私はハリネズミ的だった」とメタ認知を共有する。" } 
+        },
+        { q: "Q10：技術は高いが情報共有を「無駄」だと言う後輩をどう指導する？", 
+          o: { A: "「みんな困るから」と、情に訴えてお願いする。", B: "「共有してくれないと私も困る」と泣きつく。", C: "「共有しないなら評価を下げる」と脅す。", D: "「共有しないなら君一人で完結させろ」と孤立させる。", E: "「共有は情報の同期コストだ」と効率の面から説明する。", F: "「共有はチームを止めないための高度な技術（リスク管理）だ」と定義を書き換える。" } 
+        }
+    ];
 
     function startTest() {
         var s = document.getElementById('employee-list');
         if(!s.value){ alert("名前を選択してください"); return; }
         selectedName = s.value;
         document.getElementById('step-name').classList.remove('active');
-        document.getElementById('q1').classList.add('active');
+        renderQuiz();
     }
 
-    function nextStep(n, type) {
+    function renderQuiz() {
+        let container = document.getElementById('quiz-container');
+        container.innerHTML = "";
+        questions.forEach((item, index) => {
+            let div = document.createElement('div');
+            div.id = "q" + index;
+            div.className = "card" + (index === 0 ? " active" : "");
+            
+            let progress = `<div class="progress-bar"><div class="progress-inner" style="width:${(index+1)*10}%"></div></div>`;
+            let ops = "";
+            let keys = Object.keys(item.o).sort(() => Math.random() - 0.5); // シャッフル
+            keys.forEach(k => {
+                ops += `<button class="option-btn" onclick="next(${index}, '${k}')">${item.o[k]}</button>`;
+            });
+
+            div.innerHTML = `${progress}<h2>${item.q}</h2><div class="options">${ops}</div>`;
+            container.appendChild(div);
+        });
+    }
+
+    function next(idx, type) {
         scores[type]++;
-        document.getElementById('q' + n).classList.remove('active');
-        document.getElementById('q' + (n + 1)).classList.add('active');
+        document.getElementById('q' + idx).classList.remove('active');
+        if (idx + 1 < questions.length) {
+            document.getElementById('q' + (idx + 1)).classList.add('active');
+        } else {
+            showResult();
+        }
     }
 
-    function finishTest(lastType) {
-        scores[lastType]++;
-        document.getElementById('q4').classList.remove('active');
-        
+    function showResult() {
         var maxType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         var data = {
-            A: { t: "チワワフィールド", s: "嫌われたくない思いが強く、指導が曖昧です。", p: "役割としての判断を優先しましょう。" },
-            B: { t: "うさぎフィールド", s: "不安がブレーキになっています。", p: "事実と感情を分け、今日の一手に集中を。" },
-            C: { t: "ハリネズミフィールド", s: "自分の基準を押し付け、攻撃的になっています。", p: "正論は武器ではなく道具。相手を助ける視座を。" },
-            D: { t: "社欠ねこフィールド", s: "合理的ですが、周囲への配慮を欠いています。", p: "共有は高度な技術。仕組みとして実行を。" },
-            E: { t: "ねこフィールド", s: "自律できており、強い軸を持っています。", p: "次は他者の成長を支えるライオンへ。" },
-            F: { t: "ライオンフィールド", s: "理想的先輩です。30手先を読んでいます。", p: "その背中を見せ続けてください。" }
+            A: { t: "チワワフィールド（迎合・依存）", s: "嫌われたくない思いが強く、指導が曖昧です。周囲に合わせる『小善』に逃げていませんか？", p: "好かれることより、役割としての判断基準を優先しましょう。一時の衝突を恐れない勇気が必要です。" },
+            B: { t: "うさぎフィールド（不安・悲観）", s: "不安が行動のブレーキになっています。物事を悲観的に捉え、周囲の士気を下げているリスクがあります。", p: "『事実』と『感情』を切り分けましょう。最悪を想像する前に、今日できる『センターピン』に集中してください。" },
+            C: { t: "ハリネズミフィールド（正論・攻撃）", s: "自分の基準を絶対視し、攻撃的になっています。指導がただの『優劣の確認』になっていませんか？", p: "正論は武器ではなく、道を作る道具です。相手を倒すのではなく、どうすれば成長できるかの視座を持ちましょう。" },
+            D: { t: "社会性欠けるねこ（独善・断絶）", s: "合理的ですが、他者への配慮を『無駄』として切り捨てています。孤立し、チームの力を最大化できていません。", p: "『配慮』は高度な技術です。コミュニケーションを仕組みとして実行し、周囲を巻き込む努力をしましょう。" },
+            E: { t: "ねこフィールド（自律・客観）", s: "自律ができており、強い軸を持っています。0点付近の感情に流されず、事実に基づいた行動ができています。", p: "十分優秀ですが、一人で完結しがちです。次は『他者の人生を豊かにする』というライオンへの変容を目指しましょう。" },
+            F: { t: "ライオンフィールド（成熟・育成）", s: "素晴らしい！あなたはQ-MAXが理想とする先輩です。常に30手先を読み、大善を追求しています。", p: "その謙虚さと視座を後輩に見せ続けてください。後輩が自分を超えていくことを最大の喜びにしましょう。" }
         };
 
         var resultTitle = data[maxType].t;
-        document.getElementById('res-name-display').innerText = selectedName + " さんの結果";
+        document.getElementById('res-name-display').innerText = selectedName + " さんの診断結果";
         document.getElementById('result-title').innerText = resultTitle;
         document.getElementById('result-status').innerText = data[maxType].s;
         document.getElementById('result-prescription').innerText = data[maxType].p;
         document.getElementById('result').classList.add('active');
-
-        // 履歴を保存（LocalStorage）
-        saveResult(selectedName, resultTitle);
+        saveHistory(selectedName, resultTitle);
     }
 
-    // 管理者解錠
+    function saveHistory(n, t) {
+        var h = JSON.parse(localStorage.getItem('qmax_v2_history') || "[]");
+        var d = new Date();
+        h.push({ n: n, t: t, d: d.toLocaleString() });
+        localStorage.setItem('qmax_v2_history', JSON.stringify(h));
+    }
+
     function unlockAdmin() {
-        var pw = prompt("暗証番号を入力してください");
-        if (pw === "20050315manurewa") {
+        if (prompt("暗証番号") === "20050315manurewa") {
             document.getElementById('admin-content').style.display = 'block';
-            loadHistory();
+            var h = JSON.parse(localStorage.getItem('qmax_v2_history') || "[]");
+            document.getElementById('history-data').innerHTML = h.reverse().map(i => `<div>[${i.d}] ${i.n} : ${i.t}</div>`).join('') || "履歴なし";
             window.scrollTo(0, document.body.scrollHeight);
-        } else {
-            alert("番号が違います");
-        }
-    }
-
-    // 履歴保存ロジック
-    function saveResult(name, type) {
-        var history = JSON.parse(localStorage.getItem('qmax_history') || "[]");
-        var now = new Date();
-        var dateStr = (now.getMonth()+1) + "/" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes();
-        history.push({ n: name, t: type, d: dateStr });
-        localStorage.setItem('qmax_history', JSON.stringify(history));
-    }
-
-    // 履歴読み込み
-    function loadHistory() {
-        var history = JSON.parse(localStorage.getItem('qmax_history') || "[]");
-        var html = history.length ? history.reverse().map(i => `<div>・[${i.d}] ${i.n}：${i.t}</div>`).join('') : "履歴がありません。";
-        document.getElementById('history-data').innerHTML = html;
-    }
-
-    function clearHistory() {
-        if(confirm("全ての履歴を削除しますか？")){
-            localStorage.removeItem('qmax_history');
-            loadHistory();
         }
     }
 </script>
