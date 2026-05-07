@@ -20,26 +20,19 @@
         .option-btn { display: block; width: 100%; text-align: left; padding: 1.1rem; margin-bottom: 0.8rem; border: 2px solid #edf2f7; border-radius: 8px; background: #f8fafc; cursor: pointer; transition: 0.2s; font-size: 1rem; }
         .option-btn:hover { background-color: #ebf8ff; border-color: var(--qmax-orange); transform: translateX(5px); }
         .btn-primary { background: var(--qmax-orange); color: white; border: none; padding: 1rem 2.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; display: block; margin: 1.5rem auto; font-size: 1.1rem; text-decoration:none; text-align:center;}
-        
         .result-section-title { font-weight: bold; color: var(--qmax-blue); margin-top: 1.5rem; border-left: 4px solid var(--qmax-orange); padding-left: 0.8rem; font-size: 1.1rem; }
         .result-content { background: #f9fbff; padding: 1.2rem; border-radius: 8px; margin-top: 0.5rem; font-size: 0.95rem; white-space: pre-wrap; }
-        .dialogue-box { margin-top: 1rem; padding: 1rem; border-radius: 8px; font-size: 0.9rem; }
+        .dialogue-box { margin-top: 1rem; padding: 1rem; border-radius: 8px; font-size: 0.9rem; white-space: pre-wrap; }
         .ng-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; }
         .ok-box { background: #f0fff4; border: 1px solid #9ae6b4; color: #276749; }
-        
         .admin-section { margin-top: 5rem; padding: 2rem; border-top: 1px dashed #ccc; text-align: center; }
         .admin-btn { background: #718096; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; margin: 5px; }
-        
-        .member-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 2rem; }
-        .member-btn { background: #fff; border: 2px solid var(--qmax-blue); color: var(--qmax-blue); padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .member-btn:hover { background: var(--qmax-blue); color: #fff; }
-        .eval-card { display: none; text-align: left; margin-top: 2rem; border-top: 2px solid #eee; padding-top: 2rem; }
-        .feature-box { background: #ebf8ff; border: 1px solid #90cdf4; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .problem-box { background: #fffaf0; border: 1px solid #fbd38d; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .solution-box { background: #f0fff4; border: 1px solid #9ae6b4; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
-        .word-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .word-card { padding: 12px; border-radius: 8px; font-size: 0.9rem; }
+        .member-btn { background: #fff; border: 2px solid var(--qmax-blue); color: var(--qmax-blue); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 5px; }
         .status-tag { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 5px; background: #e2e8f0; color: #2d3748; font-weight: bold; }
+        .mentor-special { border: 4px solid var(--qmax-orange); padding: 20px; border-radius: 12px; margin-top: 30px; background: #fffaf0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; background: #fff; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f4f4f4; }
     </style>
 </head>
 <body>
@@ -52,7 +45,7 @@
 <div class="container">
     <!-- 名前選択 -->
     <div id="step-name" class="card active">
-        <h2>修練を始める前に：名前を選択</h2>
+        <h2>名前を選択してください</h2>
         <select id="employee-list">
             <option value="" disabled selected>リストから選択</option>
             <option>吉武 直志</option><option>髙瀬 悠二</option><option>石井 祥太</option><option>宝満 勇蔵</option><option>西村 ひとみ</option>
@@ -73,91 +66,54 @@
 
     <div id="quiz-container"></div>
 
-    <!-- 結果表示 -->
+    <!-- 結果画面 -->
     <div id="result" class="card">
         <div id="res-user-header" style="text-align:center; font-weight:bold; color:var(--qmax-orange);"></div>
         <div id="result-badge" style="text-align:center; font-size:2.5rem;"></div>
         <div id="result-title" style="font-size:1.8rem; font-weight:bold; color:var(--qmax-blue); text-align:center; margin-bottom:2rem;"></div>
-        <div class="result-section-title">▼特徴</div><div id="res-features" class="result-content"></div>
-        <div class="result-section-title">▼先輩になったときの失敗例</div><div id="res-failures" class="result-content"></div>
-        <div class="result-section-title">▼対策・意識すること</div><div id="res-measures" class="result-content"></div>
-        <div class="result-section-title">▼具体例</div>
-        <div id="res-dialogue-ng" class="dialogue-box ng-box" style="white-space:pre-wrap;"></div>
-        <div id="res-dialogue-ok" class="dialogue-box ok-box" style="white-space:pre-wrap;"></div>
         
-        <!-- ★OJT担当者専用：自動育成カルテ共有セクション（初期は非表示）★ -->
-        <div id="ojt-mentor-section" style="display:none; margin-top:3rem; padding-top:2rem; border-top:3px double var(--qmax-orange);">
-            <div style="background:var(--qmax-blue); color:#fff; padding:10px; border-radius:8px; text-align:center; font-weight:bold; font-size:1.1rem; margin-bottom:1.5rem;">
-                🔔 OJT担当者向け特別共有：あなたが担当する新人の育成カルテ
-            </div>
-            <h3 id="ojt-eval-name" style="color:var(--qmax-orange); font-size:1.5rem; margin-bottom:0.5rem;"></h3>
-            <p id="ojt-eval-field" style="font-weight:bold; color:#4a5568;"></p>
-            <div id="ojt-eval-tags" style="margin-bottom:1.5rem;"></div>
-            
-            <div class="result-section-title">担当新人の資質・特徴（強み）</div>
-            <div id="ojt-eval-characteristics" class="feature-box" style="white-space:pre-wrap;"></div>
+        <div id="field-detail-box">
+            <div class="result-section-title">▼特徴</div><div id="res-features" class="result-content"></div>
+            <div class="result-section-title">▼先輩になったときの失敗例</div><div id="res-failures" class="result-content"></div>
+            <div class="result-section-title">▼対策・意識すること</div><div id="res-measures" class="result-content"></div>
+            <div class="result-section-title">▼具体例</div>
+            <div id="res-dialogue-ng" class="dialogue-box ng-box"></div>
+            <div id="res-dialogue-ok" class="dialogue-box ok-box"></div>
+        </div>
 
+        <!-- OJT担当者用特別枠 -->
+        <div id="ojt-mentor-box" class="mentor-special" style="display:none;">
+            <h3 style="color:var(--qmax-orange); margin-top:0;">💡 OJT担当者への特別共有</h3>
+            <p id="ojt-msg" style="font-size:0.9rem; font-weight:bold; border-bottom:1px solid #ddd; padding-bottom:10px;"></p>
+            <div class="result-section-title">新人の資質・特徴（強み）</div>
+            <div id="ojt-char" class="result-content" style="background:#fff;"></div>
             <div class="result-section-title">仕事中に出そうな問題点（想定リスク）</div>
-            <div id="ojt-eval-problems" class="problem-box" style="white-space:pre-wrap;"></div>
-            
-            <div class="result-section-title">リーダーとしての対応方法（指導指針）</div>
-            <div id="ojt-eval-solution" class="solution-box" style="white-space:pre-wrap;"></div>
-
-            <div class="word-grid" style="margin-bottom:20px;">
-                <div>
-                    <div style="font-weight:bold; color:#276749; font-size:0.9rem;">⭕ おすすめの言葉</div>
-                    <div id="ojt-eval-ok-word" class="word-card ok-box" style="white-space:pre-wrap;"></div>
-                </div>
-                <div>
-                    <div style="font-weight:bold; color:#c53030; font-size:0.9rem;">❌ NGワード</div>
-                    <div id="ojt-eval-ng-word" class="word-card ng-box" style="white-space:pre-wrap;"></div>
-                </div>
+            <div id="ojt-prob" class="result-content" style="background:#fff; color:#c53030;"></div>
+            <div class="result-section-title">リーダーの指導指針</div>
+            <div id="ojt-sol" class="result-content" style="background:#fff; color:#276749;"></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
+                <div class="ok-box dialogue-box" id="ojt-ok"></div>
+                <div class="ng-box dialogue-box" id="ojt-ng"></div>
             </div>
         </div>
 
-        <button class="btn-primary" style="margin-top:3rem;" onclick="location.reload()">もう一度診断する</button>
+        <button class="btn-primary" style="margin-top:3rem;" onclick="location.reload()">トップに戻る</button>
     </div>
 
-    <!-- 評価カルテ（リーダー用） -->
-    <div id="evaluation-page" class="card">
-        <h2 style="text-align:center;">新人評価カルテ（リーダー専用）</h2>
-        <div class="member-grid" id="member-list-grid"></div>
-        
-        <div id="member-eval-detail" class="eval-card">
-            <h3 id="eval-name" style="color:var(--qmax-orange); font-size:1.5rem; margin-bottom:0.5rem;"></h3>
-            <p id="eval-field" style="font-weight:bold; color:#4a5568;"></p>
-            <div id="eval-tags" style="margin-bottom:1.5rem;"></div>
-            
-            <div class="result-section-title">本人の資質・特徴（強み）</div>
-            <div id="eval-characteristics" class="feature-box" style="white-space:pre-wrap;"></div>
-
-            <div class="result-section-title">仕事中に出そうな問題点（想定リスク）</div>
-            <div id="eval-problems" class="problem-box" style="white-space:pre-wrap;"></div>
-            
-            <div class="result-section-title">リーダーの対応方法（指導指針）</div>
-            <div id="eval-solution" class="solution-box" style="white-space:pre-wrap;"></div>
-
-            <div class="word-grid">
-                <div>
-                    <div style="font-weight:bold; color:#276749; font-size:0.9rem;">⭕ おすすめの言葉</div>
-                    <div id="eval-ok-word" class="word-card ok-box" style="white-space:pre-wrap;"></div>
-                </div>
-                <div>
-                    <div style="font-weight:bold; color:#c53030; font-size:0.9rem;">❌ NGワード</div>
-                    <div id="eval-ng-word" class="word-card ng-box" style="white-space:pre-wrap;"></div>
-                </div>
-            </div>
-            
-            <button class="btn-primary" style="margin-top:2rem;" onclick="hideEvalDetail()">一覧に戻る</button>
-        </div>
+    <!-- 判定基準ページ -->
+    <div id="criteria-page" class="card" style="max-width:1000px;">
+        <h2 style="text-align:center;">Q1〜Q10 判定基準（管理者用）</h2>
+        <div id="criteria-content"></div>
+        <button class="btn-primary" onclick="location.reload()">戻る</button>
     </div>
 
-    <!-- 管理者 -->
+    <!-- 管理者エリア -->
     <div class="admin-section">
-        <button class="admin-btn" onclick="openEvaluations()">新人評価カルテを開く</button>
-        <button class="admin-btn" onclick="unlockAdmin()">履歴確認</button>
-        <div id="admin-content" style="display:none; margin-top:2rem;">
-            <div id="history-list" style="text-align:left; background:#fff; padding:1rem; border-radius:8px; border:1px solid #ddd; max-height:200px; overflow-y:auto;"></div>
+        <button class="admin-btn" onclick="openCriteria()">判定基準を確認</button>
+        <button class="admin-btn" onclick="openAdminInfo()">新人データを確認</button>
+        <div id="admin-info" class="card" style="margin-top:2rem;">
+            <h3>新人メンバー判定データ</h3>
+            <table id="newcomer-table"></table>
         </div>
     </div>
 </div>
@@ -166,97 +122,73 @@
     var scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
     var selectedName = "";
 
-    const ojtMap = {
-        "バムルンタイ ナタポン": "eval_natsu",
-        "暁山 拓夢": "eval_katsu",
-        "三浦 健二": "eval_ike",
-        "片岡 春泉": "eval_kida",
-        "石田 萌々華": "eval_miya",
-        "松井 未来": "eval_ou",
-        "河瀬 耀子": "eval_fuku",
-        "堀江 梨乃": "eval_oka"
+    const questions = [
+        { q: "Q1：後輩が同じミスをした時のあなたの脳内は？", 
+          o: { B: "またか…最悪だ。私が謝りに行かなきゃ。", A: "怒ったら嫌われるかな。傷つけたくないな。", C: "普通、メモ取るでしょ。なんでできないの？", D: "説明する時間が無駄。自分でやるのが早い。", E: "ミスは本人の選択。事実を分析しよう。", F: "これは彼が考え方を磨く絶好のチャンスだ。" },
+          l: { B: "【🐰うさぎ】ミスを自分のリスクとして捉え、悲観的・被害者的な思考に陥っている。", A: "【🐶チワワ】「嫌われたくない」という自己保身が判断基準。指導より機嫌を優先。", C: "【🦔ハリネズミ】自分の「普通（基準）」を正論として相手にぶつけ、優劣で裁いている。", D: "【🐈社欠ねこ】育成を「コスト」と考え、対話を拒絶して孤立（サイロ化）している。", E: "【🐈ねこ】感情を切り離し、自律的な視点で事実に集中している。", F: "【🦁ライオン】30手先を見据え、ミスを教育の素材にポジティブに変換できている。" }
+        },
+        { q: "Q2：新しい評価制度が導入された。あなたの本音は？", 
+          o: { A: "みんなが納得してるなら波風立てずに合わせる。", B: "ハードルが上がる…。自分はやっていけるかな。", C: "基準を満たさない人間は淘汰されて当然だ。", D: "業務に関係ない制度は非効率だ。", E: "この制度を使って人生をどう豊かにできるだろうか。", F: "意図を汲み取り、後輩に納得できる形で翻訳して伝えよう。" },
+          l: { A: "【🐶チワワ】自分の意見を持たず、周囲の反応に依存（迎合）している状態。", B: "【🐰うさぎ】変化を「脅威」として捉え、安全を脅かされる不安に支配されている。", C: "【🦔ハリネズミ】制度を「他者を排除する武器」として利用し、優越感を得ようとしている。", D: "【🐈社欠ねこ】人間力等の要素を「無駄」と切り捨て、短期的合理性に固執している。", E: "【🐈ねこ】環境をどう自分の自律に役立てるか考えている。", F: "【🦁ライオン】組織の大善を理解し、チームの幸福度が上がるよう橋渡しを考えている。" }
+        },
+        { q: "Q3：多忙な時に後輩から「教えてください」と相談されたら？", 
+          o: { A: "断ると嫌われるから、無理してでも今教える。", B: "教えないと後で不満を抱かれる。困ったな。", C: "自分で調べれば？ それぐらいの主体性は持ってほしい。", D: "手順書を渡すから読んで。それ以外は後で。", E: "15分自分で調べて、1時間後に仮説を持ってきて。", F: "今の彼なら全部教えず、重要となるポイントだけ教えよう。" },
+          l: { A: "【🐶チワワ】「相手への見映え」を優先する依存的な優しさ（小善）。", B: "【🐰うさぎ】後輩の反応を「将来のトラブル」と予感し、怯えている状態。", C: "【🦔ハリネズミ】正論で突き放し、相手を「未熟だ」と見下している。", D: "【🐈社欠ねこ】最低限の情報のみ。感情の交流や対話を省略している。", E: "【🐈ねこ】仕組み（15分ルール）を使って、合理的に相手の自律を促している。", F: "【🦁ライオン】相手のレベルを見極め、成長に繋がる「センターピン」を渡している。" }
+        },
+        { q: "Q4：会議で、後輩から自分の意見に「反対」された時の反応は？", 
+          o: { A: "嫌な思いさせたかな。私の言い方が悪かったかも。", B: "否定されるなんてショックだ。もう発言したくない。", C: "私の経験が正しい。君はまだ何も分かっていない。", D: "感情論はどうでもいい。データだけで話をしよう。", E: "面白い視点だ。その意見をどう成果に繋げられるか検討しよう。", F: "反対が出るのは良い組織。もっと議論を深めていこう。" },
+          l: { A: "【🐶チワワ】反対意見を「嫌われた」と変換し、過度に自分を卑下している。", B: "【🐰うさぎ】反対を攻撃と捉え、不安になって殻に閉じこもろうとしている。", C: "【🦔ハリネズミ】過去の成功体験に固執し、相手の無知を指摘して論破しようとしている。", D: "【🐈社欠ねこ】意図を汲み取らず、冷徹な論理だけで相手を排除している。", E: "【🐈ねこ】反対意見を一つの客観データとして、合理的に活用しようとしている。", F: "【🦁ライオン】心理的安全性を担保し、異なる意見から集合知性を引き出そうとしている。" }
+        },
+        { q: "Q5：締切直前、後輩の作業が大幅に遅れている。間に合わない時どうする？", 
+          o: { A: "彼の気持ちを尊重し、一緒に残業して手伝う。", B: "どうしよう、間に合わなかったら私の責任だ…と焦る。", C: "「だから言っただろ！」と叱り、力ずくで終わらせる。", D: "「もういい」と突き放し、自分が全部巻き取って完遂させる。", E: "論理的に「間に合わない事実」を突きつけ、作業を分割する。", F: "最優先の『センターピン』を特定し、そこだけ彼に完遂させる。" },
+          l: { A: "【🐶チワワ】後輩を甘やかし自立を妨げる「小善（依存の助長）」。", B: "【🐰うさぎ】自分の責任追及を恐れ、不安が先行している。", C: "【🦔ハリネズミ】相手のミスを「裁く機会」として利用し、支配的に解決しようとしている。", D: "【🐈社欠ねこ】効率のみを優先し、後輩を戦力外として切り捨て、育成を放棄している。", E: "【🐈ねこ】事実に基づいて冷静に判断し、最も損害が少ない合理的解決を選んでいる。", F: "【🦁ライオン】責任を全うさせつつ、成功体験を積ませる「大善」の指導。" }
+        },
+        { q: "Q6：後輩が会社の方針に不満を漏らしている。信頼関係を築くための対応は？", 
+          o: { A: "「君の気持ちはよく分かるよ」と全力で同調する。", B: "不満を聞いて、自分も不安になってしまう。", C: "「決まりなんだから四の五の言うな」と一蹴する。", D: "「不満があるなら外で試せばいい」と突き放す。", E: "「不満は自由だが、この環境でどう動くか」を冷静に話す。", F: "不満の奥にある期待を汲み取り、長期的な『大善』を説く。" },
+          l: { A: "【🐶チワワ】好かれるために同調し、後輩を不満フィールドに留める大悪の行為。", B: "【🐰うさぎ】周囲の負のエネルギーに同調し、一緒に0点付近の考え方に流されている。", C: "【🦔ハリネズミ】権力やルールを盾に相手を黙らせ、思考停止を強いている。", D: "【🐈社欠ねこ】対話を無駄と考え、価値観の異なる相手を即座に排除しようとしている。", E: "【🐈ねこ】環境を変えるより自分の考え方を変える自律を促している。", F: "【🦁ライオン】不満を「人間道場」の修行と再定義し、視座を引き上げようとしている。" }
+        },
+        { q: "Q7：後輩が「AとBどちらが正解ですか？」と答えを求めてきた。", 
+          o: { A: "彼が迷わないよう、すぐに「Aだよ」と教えてあげる。", B: "自分も迷ってしまい「どっちだろうね」と一緒に悩む。", C: "「それぐらい自分で考えろ」と突き放す。", D: "「論理的にはAだ」と最短ルートの回答だけ渡す。", E: "「君の人生の選択だ。自分で決めて責任を取れ」と促す。", F: "あえて答えず「2ヶ月後の理想から見て、どちらがセンターピンかな？」と問う。" },
+          l: { A: "【🐶チワワ】答えを与え、後輩を「指示待ち（思考停止）」に追い込んでいる。", B: "【🐰うさぎ】判断基準を持っていないため、責任ある回答から逃げている。", C: "【🦔ハリネズミ】相手の未熟さを攻撃するだけで、成長のためのヒントを与えていない。", D: "【🐈社欠ねこ】スピードのみを優先し、後輩の「思考のプロセス」を軽視している。", E: "【🐈ねこ】個人の責任を重視するが、冷徹に突き放す自律。", F: "【🦁ライオン】答えではなく「考え方の型（逆算思考）」を教え、自走を支援している。" }
+        },
+        { q: "Q8：後輩が同じミスを繰り返した。イラ立ちを覚えた時の行動は？", 
+          o: { A: "自分の感情を押し殺し、より優しく接しようとする。", B: "あからさまに落胆し、無言の圧力をかけてしまう。", C: "怒りに任せて「何度言えば分かるんだ！」と詰める。", D: "感情を完全にシャットアウトし、事務的な修正だけ行う。", E: "イラ立ちをメタ認知し、ミスの根本原因をデータで分析する。", F: "怒りを自覚した上で、あえて厳しく「君の市場価値」について説く。" },
+          l: { A: "【🐶チワワ】感情の蓋をして迎合し、本質的な問題解決を先送りしている。", B: "【🐰うさぎ】負の感情を制御できず、場の空気を重くして相手を萎縮させている。", C: "【🦔ハリネズミ】感情を爆発させ、相手を見下すことでストレスを発散している。", D: "【🐈社欠ねこ】コミュニケーションを拒絶した「機能的対応」。", E: "【🐈ねこ】自分の感情を客観視できているが、自己完結している。", F: "【🦁ライオン】相手の将来のために必要な「愛のムチ」を意識的に選択している。" }
+        },
+        { q: "Q9：自分が後輩の前で重大な判断ミスをしてしまった。どう振る舞う？", 
+          o: { A: "全力で謝罪し、汚名返上のために後輩の仕事まで引き受ける。", B: "権威が傷つくのを恐れ、なんとか理由をつけて正当化する。", C: "「環境が悪かった」「指示が曖昧だった」と他責にする。", D: "ミスを無かったことにし、速やかに次のタスクへ移動する。", E: "淡々とミスを報告し、修正プランを論理的に提示する。", F: "非を認め「今の私はハリネズミ的だった」とメタ認知を共有する。" },
+          l: { A: "【🐶チワワ】機嫌取りのために本来の役割（指導）を崩している。", B: "【🐰うさぎ】失敗を認めることの恐怖（自己防衛）から言い訳に走っている。", C: "【🦔ハリネズミ】プライドを守るために周囲を攻撃し、責任を転嫁している。", D: "【🐈社欠ねこ】信頼関係の毀損を無視し、実務の進行（効率）のみを見ている。", E: "【🐈ねこ】事実として処理しているが、周囲への感情的ケアを省いている。", F: "【🦁ライオン】自身の未完成さをさらけ出すことで、「学び続ける姿勢」の見本を見せている。" }
+        },
+        { q: "Q10：情報共有を「無駄」だと言う後輩をどう指導する？", 
+          o: { A: "「みんな困るから」と、情に訴えてお願いする。", B: "「共有してくれないと私も困る」と泣きつく。", C: "「共有しないなら評価を下げる」と脅す。", D: "「共有しないなら君一人で完結させろ」と孤立させる。", E: "「共有は情報の同期コストだ」と効率の面から説明する。", F: "「共有はチームを止めないための高度な技術だ」と定義を書き換える。" },
+          l: { A: "【🐶チワワ】「お願い」という低い立場から交渉し、迎合している。", B: "【🐰うさぎ】自分を被害者に仕立て、依存的な解決を求めている。", C: "【🦔ハリネズミ】権力を使って力ずくで従わせようとする支配。", D: "【🐈社欠ねこ】チームとしての協調を諦め、バラバラの状態を許容している。", E: "【🐈ねこ】合理的な説明だが、相手の考え方のステージまでは変えられていない。", F: "【🦁ライオン】相手の価値観を否定せず、より高い視座へとアップデートさせる教育。" }
+        }
+    ];
+
+    const newcomers = {
+        natsu: { n: "夏目 雅矢", f: "🦔 ハリネズミ (論理的攻撃者)", def: "社会性", c: "論理的思考力と突破力が随一。独力で課題を解決する能力が高いが、目的達成への執着が強すぎて周囲をなぎ倒す傾向。", p: "・Q4(反対への反応): 会議で他人の意見を論破し、心理的安全性を破壊するリスク。\n・Q8(ミスへの怒り): 感情を爆発させて相手を詰め、周囲を萎縮させる。プライドが高く他責に振れやすい。", s: "「実るほど頭を垂れる稲穂かな」を徹底。論理を勝つためではなく協力するために使うよう、発言前に「これは誰を幸せにするか？」を問いかけるメタ認知の修練を。", ok: "「今のその鋭い指摘を、相手を論破するためではなく、チームを勝たせるためにどう変換できる？」", ng: "「その言い方は失礼だ。もっと謙虚になりなさい。」" },
+        katsu: { n: "桂木 乃亜", f: "🐰 うさぎ (不安ベースの努力家)", def: "主体性", c: "真面目で献身的。率先行動や傾聴姿勢が素晴らしく、組織の潤滑油となる資質がある。一方で、常に「正解」を求めて不安と戦っている。", p: "・Q4(反対への反応): 否定されるとショックを受け、殻に閉じこもって発言を止める。\n・Q9(自分のミス): 失敗を認めるのが怖くて、権威を守るために正当化や言い訳に走る。論理が詰まると根性論に逃げる癖。", s: "「未完成であることへの受容」を。リーダー自身がQ9-F(自分のミスを共有)する姿を見せ、失敗は学びの素材であることを体感させてください。また逆算思考で不安を「仕組み」で処理させます。", ok: "「正解を当てる必要はないよ。2ヶ月後のゴールから逆算して、今君が『センターピン』だと思う一手を教えて。」", ng: "「とにかく気合で頑張れば、なんとかなるから大丈夫だよ。」" },
+        ike: { n: "池本 悠河", f: "🐈 ねこ (合理的・個人主義)", def: "社会性", c: "積極性とスピードがあり、物事をデータで測る。自分の人生のハンドルをしっかり握っている自律型だが、人間関係の「感情的調整」を非合理として遠ざける。", p: "・Q3(多忙な相談): 15分ルールだけで突き放し、冷たい印象を与える。人間関係の調整を非合理として軽視する。\n・Q6(方針への不満): 不満を漏らす仲間にドライな正論だけで返し、チームの溝を深める。調整を面倒と感じる癖。", s: "「配慮という技術」の習得を。合理的な彼には「相手の感情を計算に入れることが、同期コストを最小化する(Q10-F)」というメリット面から説得し、協働の価値を学習させます。", ok: "「泥臭い調整も、プロジェクトを最短ルートで成功させるための『クリティカル・パス』の一つだよ。」", ng: "「もっと周りの人の気持ちを考えて、空気読んでよ。」" },
+        kida: { n: "喜田 咲楽", f: "🐶 チワワ (潜在的PM・自信欠如)", def: "主体性", c: "全体最適を見抜く思考力は92点（最高値）。客観的で、声の大きい意見に惑わされずに本質的な答えを導き出す力があるが、発言を控えている。", p: "・Q3(多忙な相談): 断ると嫌われるのを恐れて無理を引き受け、パンクする。\n・Q7(答えを求める): 答えを持っているのに「正解」を求めて上司に依存してしまう。消極的な「小善」の沈黙。", s: "「役割としての判断」を徹底。Q7-Fのように「センターピンはどれか？」と問い返し、自分の思考でチームを導く成功体験を積ませます。彼女の視点はチームへの最大の大善であることを伝えてください。", ok: "「君の客観的な視点は、チームが崖から落ちるのを防ぐ『大善』だよ。好かれることより役割を果たそう。」", ng: "「もっと自信を持って、積極的に発言してよ。」" },
+        miya: { n: "宮里 使永那", f: "🐈 社会性に欠けるねこ (高スペック個人主義)", def: "社会性", c: "スキルテスト86点の天才肌。エンジニア素養も高く、個人の処理能力は極めて優秀。一見「良い子」に見えるが、本質は徹底したマイペース。", p: "・Q1(ミスへの脳内): 「説明する時間が無駄、自分でやるのが早い」と判断し、周囲にナレッジを共有しない。\n・Q10(共有拒否): 共有を単なるコストと捉え、チームのリスク管理を軽視。進捗のブラックボックス化。", s: "能力への甘やかしは厳禁です。社会性を「プロの必須技術」と定義し、Q10-F(共有は高度な技術)への書き換えを。独走ではなく「チームの合理性」への貢献を業務要件として求めてください。", ok: "「共有や調整は、君の高い技術力を組織に還元するための『インターフェース』という技術だよ。」", ng: "「もっとみんなと仲良く協力して仕事しようよ。」" },
+        ou: { n: "王 藝暁", f: "🐈 社欠ねこ × 🐰 うさぎ", def: "主体性・社会性", c: "高い分析力と構造化能力。繊細な観察眼を持つが、チームへの関与が極めて薄い「指示待ち・自己完結」の状態。", p: "・Q1(ミスへの脳内): ミスが起きても事実分析のみ。周囲への影響やフォローを行わない。\n・Q10(共有拒否): 「言われていないから」と放置し、サイロ化を加速させる。自己完結の没入癖。", s: "「アラート発信の義務化」。沈黙はチームへの攻撃であると伝え、周囲を巻き込む行動をQ5-F(センターピン)として定義し、外向きのエネルギーを強制的に引き出します。報連相のフォーマット化から。", ok: "「君の分析力は素晴らしい。それを周囲にアラートとして出すことで、初めてチームの『武器』になるんだ。」", ng: "「何を考えているかわからないよ。もっと自分から話しかけて。」" },
+        fuku: { n: "福原 奏来", f: "🐶 チワワ (視野の広い調整役)", def: "主体性", c: "周囲の疲労や関係性に気づける視野の広さがある。進行管理A評価でバランス感覚に優れる。しかし、厳しい現実から目を逸らし楽観視する癖。", p: "・Q2(新制度): 自分の考えを持たず波風立てずに合わせる受動的な態度。\n・Q5(締切遅れ): 本質解決ではなく「一緒に頑張る」という気合に逃げ、ミスを自分都合の良い計算で隠蔽するリスク。", s: "「当事者意識」の強化。優しさを迎合にせず、Q6-F(長期的な大善)のために今何をすべきか、逆算思考でセンターピンを特定させる訓練を徹底。誠実さ（仁義）を重視させます。", ok: "「厳しい状況を早く共有することこそが、仲間に対する本当の『優しさ（誠実さ）』だよ。」", ng: "「福原さんがいると場が和むね。これからもそのままでいて。」" },
+        oka: { n: "岡 玲良", f: "🦁 ライオン (次世代リーダー候補)", def: "社会性(調整)", c: "圧倒的な当事者意識。合宿1位。他社の参加者を鼓舞するなど、自分の仕事を超えて「場」を良くするエネルギーは新人随一。", p: "・Q5(締切遅れ): 責任感が強すぎるあまり「自分がやった方が早い」と独走し、組織のルールを追い越して事故を起こすリスク。\n・Q8(ミスへの怒り): 相手の成長を願うあまり、自身の負の感情のコントロールが課題になる可能性。", s: "「仕組みを使いこなすリーダー」への脱皮を。Q8-F(感情のメタ認知)をリーダーが手本で見せ、熱意を組織の武器(ルール)に乗せる技術を伝えてください。", ok: "「君のその熱意を最大限活かすために、組織のルールという『武器』をどう使う？」", ng: "「やる気があるのはいいけど、とりあえず言われた通りにやって。」" }
     };
 
-    const questions = [
-        { q: "Q1：後輩が同じミスをした時のあなたの脳内は？", o: { B: "またか…最悪だ。私が謝りに行かなきゃ。", A: "怒ったら嫌われるかな。傷つけたくないな。", C: "普通、メモ取るでしょ。なんでできないの？", D: "説明する時間が無駄。自分でやるのが早い。", E: "ミスは本人の選択。事実を分析しよう。", F: "これは彼が考え方を磨く絶好のチャンスだ。" } },
-        { q: "Q2：新しい評価制度が導入された。あなたの本音は？", o: { A: "みんなが納得してるなら波風立てずに合わせる。", B: "ハードルが上がる…。自分はやっていけるかな。", C: "基準を満たさない人間は淘汰されて当然だ。", D: "業務に関係ない制度は非効率。勝手にすればいい。", E: "この制度を使って人生をどう豊かにできるだろうか。", F: "制度の意図を汲み取り、後輩に納得できる形で翻訳しよう。" } },
-        { q: "Q3：多忙な時に後輩から「教えてください」と相談されたら？", o: { A: "断ると嫌われるから、無理してでも今教える。", B: "教えないと後で不満を抱かれる、困ったな。", C: "自分で調べれば？ それぐらいの主体性は持ってほしい。", D: "手順書を投げるから読んで。それ以外は後で。", E: "15分自分で調べて、1時間後に仮説を持ってきて。", F: "今の彼なら全部教えず、重要ポイントだけ教えよう。" } },
-        { q: "Q4：会議で、後輩から自分の意見に「反対」された時の反応は？", o: { A: "嫌な思いさせたかな。私の言い方が悪かったか。", B: "否定されるなんてショック。もう発言したくない。", C: "私の経験が正しい。君はまだ何も分かっていない。", D: "感情論はどうでもいい。データだけで話をしよう。", E: "面白い視点だ。成果に繋げるか検討しよう。", F: "反対が出るのは良い組織。もっと議論を深めよう。" } },
-        { q: "Q5：締切直前、後輩の作業が大幅に遅れている。後輩は「自分でやりたい」と言うが間に合わない。どうする？", o: { A: "彼の気持ちを尊重し、一緒に残業して手伝う。", B: "どうしよう、間に合わなかったら私の責任だ…と焦る。", C: "「だから言っただろ！」と叱り、力ずくで終わらせる。", D: "「もういい」と突き放し、自分が全部巻き取って完遂させる。", E: "論理的に「間に合わない事実」を突きつけ、作業を分割する。", F: "最優先の『センターピン』を特定し、そこだけ彼に完遂させる。" } },
-        { q: "Q6：後輩が会社の方針に不満を漏らしている。信頼関係を築くための対応は？", o: { A: "「君の気持ちはよく分かるよ」と全力で同調する。", B: "不満を聞いて、自分も不安になってしまう。", C: "「決まりなんだから四の五の言うな」と一蹴する。", D: "「不満があるなら外で試せばいい」と突き放す。", E: "「不満は自由だが、この環境でどう動くか」を冷静に話す。", F: "不満の奥にある期待を汲み取り、長期的な『大善』を説く。" } },
-        { q: "Q7：後輩が「AとBどちらが正解ですか？」と答えを求めてきた。", o: { A: "彼が迷わないよう、すぐに「Aだよ」と教えてあげる。", B: "自分も迷ってしまい「どっちだろうね」と一緒に悩む。", C: "「それぐらい自分で考えろ」と突き放す。", D: "「論理的にはAだ」と最短ルートの回答だけ渡す。", E: "「君の人生の選択だ。自分で決めて責任を取れ」と促す。", F: "あえて答えず「2ヶ月後の理想から見て、どちらがセンターピンかな？」と問う。" } },
-        { q: "Q8：後輩が同じミスを繰り返した。イラ立ちを覚えた時の行動は？", o: { A: "自分の感情を押し殺し、より優しく接しようとする。", B: "あからさまに落胆し、無言の圧力をかけてしまう。", C: "怒りに任せて「何度言えば分かるんだ！」と詰める。", D: "感情を完全にシャットアウトし、事務的な修正だけ行う。", E: "イラ立ちをメタ認知し、ミスの根本原因をデータで分析する。", F: "怒りを自覚した上で、あえて厳しく「君の市場価値」について説く。" } },
-        { q: "Q9：自分が後輩の前で重大な判断ミスをしてしまった。どう振る舞う？", o: { A: "全力で謝罪し、汚名返上のために後輩の仕事まで引き受ける。", B: "権威が傷つくのを恐れ、なんとか理由をつけて正当化する。", C: "「環境が悪かった」「指示が曖昧だった」と他責にする。", D: "ミスを無かったことにし、速やかに次のタスクへ移動する。", E: "淡々とミスを報告し、修正プランを論理的に提示する。", F: "非を認め「今の私はハリネズミ的だった」とメタ認知を共有する。" } },
-        { q: "Q10：情報共有を「無駄」だと言う後輩をどう指導する？", o: { A: "「みんな困るから」と、情に訴えてお願いする。", B: "「共有してくれないと私も困る」と泣きつく。", C: "「共有しないなら評価を下げる」と脅す。", D: "「共有しないなら君一人で完結させろ」と孤立させる。", E: "「共有は情報の同期コストだ」と効率の面から説明する。", F: "「共有はチームを止めないための高度な技術だ」と定義を書き換える。" } }
-    ];
+    const mentorMap = {
+        "バムルンタイ ナタポン": "natsu", "暁山 拓夢": "katsu", "三浦 健二": "ike", "片岡 春泉": "kida",
+        "石田 萌々華": "miya", "松井 未来": "ou", "河瀬 耀子": "fuku", "堀江 梨乃": "oka"
+    };
 
     const fieldData = {
         B: { badge: "🐰", title: "うさぎフィールド", features: "悲観的・不安・自己防衛", failures: "場の空気を下げる・判断回避", measures: "事実と感情を分ける・安心材料を渡す", ng: "❌NG: 「正直、先が見えなくて不安だよね…」", ok: "⭕OK: 「不安な点はあるけど、整理して進めましょう」" },
-        A: { badge: "🐶", title: "チワワフィールド", features: "迎合・承認欲求・他者依存", failures: "指導の曖昧化・役割の崩壊", measures: "役割としての判断を優先・一貫した態度", ng: "❌NG: 「君のやりやすい方でいいよ」", ok: "⭕OK: 「この基準で進めてほしい。理由は〜」" },
+        A: { badge: "🐶", title: "チワワフィールド", features: "迎合・承認欲求・他者依存", failures: "指導の曖昧化・役割の崩壊", measures: "役割としての判断を優先・一貫した態度", ng: "❌NG: 「君のやりやすい方でいいよ」", ok: "⭕OK: 「今回はこの基準で進めてほしい。理由は〜」" },
         C: { badge: "🦔", title: "ハリネズミフィールド", features: "攻撃・正論・優越感", failures: "見下し・優劣の確認", measures: "過程を見る・言語化共有・強さより支援", ng: "❌NG: 「前にも言ったよね？なんでできないの？」", ok: "⭕OK: 「全体は良くなっている。この1点を直そう」" },
         D: { badge: "🐈", title: "社会性に欠けるねこ", features: "孤立・合理的独善・配慮欠如", failures: "情報断絶・メリット優先", measures: "配慮は仕事の技術・周囲を動かす自覚", ng: "❌NG: 「特に言われてなかったので共有してません」", ok: "⭕OK: 「念のため共有します。今の状況は〜」" },
         E: { badge: "🐈", title: "ねこフィールド", features: "自律・論理的・個人主義", failures: "戸惑いを拾わない・説明省略", measures: "相手の感情を考慮・対話の余地", ng: "❌NG: 「自分は整理できてるからこの方針でいくね」", ok: "⭕OK: 「自分はこう考えたが、君はどこが引っかかる？」" },
         F: { badge: "🦁", title: "ライオンフィールド", features: "成熟・謙虚・育成・協働", failures: "自己完結・慢心（稀）", measures: "30手先を読む大善・謙虚な見本", ng: "❌NG: 「自分でやった方が早いからいいよ」", ok: "⭕OK: 「ここは任せたい。途中で確認しよう」" }
     };
-
-    const newcomers = [
-        { id: "eval_oka", n: "岡 玲良", f: "🦁 ライオン (次世代リーダー候補)", 
-          t: ["主体性：高", "社会性：中(要調整)"],
-          c: "圧倒的な当事者意識と利他心を持つ。合宿1位。他社の参加者を鼓舞するなど、自分の仕事を超えて「場」を良くするエネルギーは新人随一。",
-          p: "・Q5(締切直前の遅れ)において、責任感が強すぎるあまり「自分がやった方が早い」と独走し、組織のルールを追い越して事故を起こすリスク。\n・Q8(繰り返されるミス)において、相手の成長を願うあまり、自身の「負の感情（イライラ）」のコントロールが課題になる可能性。",
-          s: "「仕組みを使いこなすリーダー」への脱皮を。Q8-F(感情のメタ認知と市場価値の提示)をリーダーが手本で見せ、熱意を組織の武器(ルール)に乗せる技術を伝えてください。",
-          ok: "「君のその熱意を最大限活かすために、組織のルールという『武器』をどう使う？」",
-          ng: "「やる気があるのはいいけど、とりあえず言われた通りにやって。」" },
-        { id: "eval_miya", n: "宮里 使永那", f: "🐈 社会性に欠けるねこ (高スペック個人主義)", 
-          t: ["主体性：中", "社会性：欠如(極)"],
-          c: "スキルテスト86点の天才肌。エンジニア素養も高く、個人の処理能力は極めて優秀。一見「良い子」に見えるが、本質は徹底したマイペース。",
-          p: "・Q1(後輩のミスへの脳内)のように、「説明する時間が無駄、自分でやるのが早い」と判断し、周囲にナレッジを共有しない。\n・Q10(情報共有を無駄だと言う後輩)のように、共有を単なるコストと捉え、チームのリスク管理を軽視する。進捗のブラックボックス化。",
-          s: "能力への甘やかしは厳禁です。社会性を「性格」ではなく「プロの必須技術」と定義し、Q10-F(共有は高度な技術)への書き換えを。独走ではなく「チームの合理性」への貢献を業務要件として求めてください。",
-          ok: "「共有や調整は、君の高い技術力を組織に還元するための『インターフェース』という技術だよ。」",
-          ng: "「もっとみんなと仲良く協力して仕事しようよ。」" },
-        { id: "eval_natsu", n: "夏目 雅矢", f: "🦔 ハリネズミ (論理的攻撃者)", 
-          t: ["主体性：高", "社会性：欠如(攻撃的)"],
-          c: "論理的思考力と突破力が随一。独力で課題を解決する能力が高いが、目的達成への執着が強すぎて周囲をなぎ倒す傾向。",
-          p: "・Q4(意見への反対)において、他人の意見を「分かっていない」と論破し、チームの心理的安全性を破壊する。\n・Q8(繰り返されるミス)において、感情を爆発させて「何度言えば分かるんだ」と相手を詰め、周囲を萎縮させる。プライドが高く他責に振れやすい。",
-          s: "「実るほど頭を垂れる稲穂かな」を徹底。論理を勝つためではなく協力するために使うよう、発言前に「これは誰を幸せにするか？」を問いかけるメタ認知の修練を課してください。",
-          ok: "「今のその鋭い指摘を、相手を論破するためではなく、チームを勝たせるためにどう変換できる？」",
-          ng: "「その言い方は失礼だ。もっと謙虚になりなさい。」" },
-        { id: "eval_katsu", n: "桂木 乃亜", f: "🐰 うさぎ (不安ベースの努力家)", 
-          t: ["主体性：不足", "社会性：高"],
-          c: "真面目で献身的。率先行動や傾聴姿勢が素晴らしく、組織の潤滑油となる資質がある。一方で、常に「正解」を求めて不安と戦っている。",
-          p: "・Q4(意見への反対)において、否定されるとショックを受け、殻に閉じこもって発言を止める。\n・Q9(自分のミス)において、失敗を認めるのが怖くて、権威を守るために正当化や言い訳に走る。論理が詰まると根性論に逃げる癖。",
-          s: "「未完成であることへの受容」を。リーダー自身がQ9-F(自分のミスを共有)する姿を見せ、失敗は学びの素材であることを体感させてください。また逆算思考で不安を「仕組み」で処理させ、主体性を育てます。",
-          ok: "「正解を当てる必要はないよ。2ヶ月後のゴールから逆算して、今君が『センターピン』だと思う一手を教えて。」",
-          ng: "「とにかく気合で頑張れば、なんとかなるから大丈夫だよ。」" },
-        { id: "eval_kida", n: "喜田 咲楽", f: "🐶 チワワ (潜在的PM・自信欠如)", 
-          t: ["主体性：不足", "社会性：中"],
-          c: "全体最適を見抜く思考力は92点（最高値）。客観的で、声の大きい意見に惑わされずに本質的な答えを導き出す力があるが、発言を控えている。",
-          p: "・Q3(多忙な相談)において、断ると嫌われるのを恐れて無理を引き受け、パンクする。\n・Q7(答えを求めてきた後輩)のように、自分で判断できる力があるのに「正解」を求めて上司に依存してしまう。消極的な「小善」の沈黙。",
-          s: "「役割としての判断」を徹底。Q7-Fのように「センターピンはどれか？」と問い返し、自分の思考でチームを導く成功体験を積ませます。彼女の視点はチームへの最大の大善であることを伝えてください。",
-          ok: "「君の客観的な視点は、チームが崖から落ちるのを防ぐ『大善』だよ。好かれることより役割を果たそう。」",
-          ng: "「もっと自信を持って、積極的に発言してよ。」" },
-        { id: "eval_ike", n: "池本 悠河", f: "🐈 ねこ (合理的・個人主義)", 
-          t: ["主体性：高", "社会性：不足(軽視)"],
-          c: "積極性とスピードがあり、物事をデータで測る。自分の人生のハンドルをしっかり握っている自律型だが、人間関係の「感情的調整」を非合理として遠ざける。",
-          p: "・Q3(多忙な相談)において、「15分自分で調べろ」と仕組み（E：ねこ）だけで突き放し、冷たい印象を与える。\n・Q6(方針への不満)において、不満を漏らす仲間に正論だけで返し、チームの溝を深める。調整を面倒と感じる癖。",
-          s: "「配慮という技術」の習得を。合理的な彼には「相手の感情を計算に入れることが、プロジェクトの同期コスト（トータルコスト）を最小化する(Q10-F)」というメリット面から説得し、協働の価値を学習させます。",
-          ok: "「泥臭い調整も、プロジェクトを最短ルートで成功させるための『クリティカル・パス』の一つだよ。」",
-          ng: "「もっと周りの人の気持ちを考えて、空気読んでよ。」" },
-        { id: "eval_fuku", n: "福原 奏来", f: "🐶 チワワ (視野の広い調整役)", 
-          t: ["主体性：不足", "社会性：高"],
-          c: "周囲の疲労や関係性に気づける視野の広さがある。進行管理A評価でバランス感覚に優れる。しかし、厳しい現実から目を逸らし「なんとかなる」と楽観視する癖。",
-          p: "・Q2(新制度)のような変化に対し、自分の考えを持たず「波風立てずに合わせる」という受動的な態度をとる。\n・Q5(締切直前の遅れ)において、本質解決ではなく「一緒に頑張る」という気合に逃げ、ミスを自分都合の良い計算で隠蔽するリスク。",
-          s: "「当事者意識(ハンドルを握る)」の強化。優しさを迎合にせず、Q6-F(長期的な大善)のために今何をすべきか、逆算思考でセンターピンを特定させる訓練を徹底してください。誠実さ（仁義）を重視させます。",
-          ok: "「厳しい状況を早く共有することこそが、仲間に対する本当の『優しさ（誠実さ）』だよ。」",
-          ng: "「福原さんがいると場が和むね。これからもそのままでいて。」" },
-        { id: "eval_ou", n: "王 藝暁", f: "🐈 社会性に欠けるねこ × 🐰 うさぎ", 
-          t: ["主体性：不足", "社会性：欠如(孤立)"],
-          c: "高い分析力と構造化能力。繊細な観察眼を持つが、チームへの関与が極めて薄い「指示待ち・自己完結」の状態。",
-          p: "・Q1(後輩のミスへの脳内)のように、ミスが起きても「事実を分析する」だけで、周囲への影響や感情フォローを全く行わない。\n・Q10(情報共有を無駄だと言う後輩)のように、共有を「言われていないから」と放置し、サイロ化を加速させる。自己完結の没入癖。",
-          s: "「アラート発信 of 義務化」。沈黙はチームに対するリスクであると伝え、周囲を巻き込む行動をQ5-F(センターピン)として定義し、外向きのエネルギーを強制的に引き出します。報連相のフォーマット化から始めます。",
-          ok: "「君の分析力は素晴らしい。それを周囲にアラートとして出すことで、初めてチームの『武器』になるんだ。」",
-          ng: "「何を考えているかわからないよ。もっと自分から話しかけて。」" }
-    ];
 
     function startTest() {
         var s = document.getElementById('employee-list');
@@ -286,7 +218,7 @@
     function showResult() {
         var max = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
         var d = fieldData[max];
-        document.getElementById('res-user-header').innerText = selectedName + " さんの結果";
+        document.getElementById('res-user-header').innerText = selectedName + " さんの診断結果";
         document.getElementById('result-badge').innerText = d.badge;
         document.getElementById('result-title').innerText = d.title;
         document.getElementById('res-features').innerText = d.features;
@@ -294,74 +226,54 @@
         document.getElementById('res-measures').innerText = d.measures;
         document.getElementById('res-dialogue-ng').innerText = d.ng;
         document.getElementById('res-dialogue-ok').innerText = d.ok;
-        document.getElementById('result').classList.add('active');
-        saveHistory(selectedName, d.title);
 
-        // ★OJT担当者専用：自動カルテ表示ロジック★
-        var ojtSection = document.getElementById('ojt-mentor-section');
-        if (ojtMap[selectedName]) {
-            var targetId = ojtMap[selectedName];
-            var m = newcomers.find(x => x.id === targetId);
-            
-            document.getElementById('ojt-eval-name').innerText = m.n + " さん";
-            document.getElementById('ojt-eval-field').innerText = "判定フィールド： " + m.f;
-            document.getElementById('ojt-eval-tags').innerHTML = m.t.map(tag => `<span class="status-tag">${tag}</span>`).join('');
-            document.getElementById('ojt-eval-characteristics').innerText = m.c;
-            document.getElementById('ojt-eval-problems').innerText = m.p;
-            document.getElementById('ojt-eval-solution').innerText = m.s;
-            document.getElementById('ojt-eval-ok-word').innerText = m.ok;
-            document.getElementById('ojt-eval-ng-word').innerText = m.ng;
-            
-            ojtSection.style.display = 'block';
+        // OJT担当者の場合のみ表示
+        const newcomerId = mentorMap[selectedName];
+        if (newcomerId) {
+            const m = newcomers[newcomerId];
+            document.getElementById('ojt-msg').innerText = `あなたは OJT担当者 です。担当する ${m.n} さんの指導指針を共有します。`;
+            document.getElementById('ojt-char').innerText = m.c;
+            document.getElementById('ojt-prob').innerText = m.p;
+            document.getElementById('ojt-sol').innerText = m.s;
+            document.getElementById('ojt-ok').innerHTML = `<b>⭕ おすすめ</b><br>${m.ok}`;
+            document.getElementById('ojt-ng').innerHTML = `<b>❌ NG</b><br>${m.ng}`;
+            document.getElementById('ojt-mentor-box').style.display = 'block';
         } else {
-            ojtSection.style.display = 'none';
+            document.getElementById('ojt-mentor-box').style.display = 'none';
         }
 
+        document.getElementById('result').classList.add('active');
         window.scrollTo(0, 0);
     }
 
-    function saveHistory(n, t) {
-        var h = JSON.parse(localStorage.getItem('qmax_v6_history') || "[]");
-        h.push({ n: n, t: t, d: new Date().toLocaleString() });
-        localStorage.setItem('qmax_v6_history', JSON.stringify(h));
-    }
-
-    function openEvaluations() {
+    function openCriteria() {
         if (prompt("暗証番号") === "20050315manurewa") {
+            let html = "";
+            const fieldNames = { A: "🐶チワワ", B: "🐰うさぎ", C: "🦔ハリネズミ", D: "🐈社欠ねこ", E: "🐈ねこ", F: "🦁ライオン" };
+            questions.forEach((q, i) => {
+                html += `<div style="margin-bottom:2rem;"><h4 style="background:#1e3a5f; color:white; padding:8px;">${q.q}</h4><table>`;
+                Object.keys(q.o).forEach(k => {
+                    html += `<tr><td style="width:100px; font-weight:bold;">${fieldNames[k]}</td><td>${q.o[k]}</td><td style="color:#666; font-size:0.8rem;">${q.l[k]}</td></tr>`;
+                });
+                html += `</table></div>`;
+            });
+            document.getElementById('criteria-content').innerHTML = html;
             document.getElementById('step-name').classList.remove('active');
             document.getElementById('quiz-container').innerHTML = "";
             document.getElementById('result').classList.remove('active');
-            document.getElementById('evaluation-page').classList.add('active');
-            const grid = document.getElementById('member-list-grid');
-            grid.innerHTML = newcomers.map(m => `<button class="member-btn" onclick="showMemberEval('${m.id}')">${m.n}</button>`).join('');
+            document.getElementById('criteria-page').classList.add('active');
             window.scrollTo(0, 0);
         }
     }
 
-    function showMemberEval(id) {
-        const m = newcomers.find(x => x.id === id);
-        document.getElementById('eval-name').innerText = m.n;
-        document.getElementById('eval-field').innerText = "フィールド： " + m.f;
-        document.getElementById('eval-tags').innerHTML = m.t.map(tag => `<span class="status-tag">${tag}</span>`).join('');
-        document.getElementById('eval-characteristics').innerText = m.c;
-        document.getElementById('eval-problems').innerText = m.p;
-        document.getElementById('eval-solution').innerText = m.s;
-        document.getElementById('eval-ok-word').innerText = m.ok;
-        document.getElementById('eval-ng-word').innerText = m.ng;
-        document.getElementById('member-eval-detail').style.display = 'block';
-        window.scrollTo(0, document.getElementById('member-eval-detail').offsetTop);
-    }
-
-    function hideEvalDetail() {
-        document.getElementById('member-eval-detail').style.display = 'none';
-        window.scrollTo(0, 0);
-    }
-
-    function unlockAdmin() {
+    function openAdminInfo() {
         if (prompt("暗証番号") === "20050315manurewa") {
-            document.getElementById('admin-content').style.display = 'block';
-            var h = JSON.parse(localStorage.getItem('qmax_v6_history') || "[]");
-            document.getElementById('history-list').innerHTML = h.reverse().map(i => `<div style="padding:5px; border-bottom:1px solid #eee;">[${i.d}] ${i.n} : ${i.t}</div>`).join('') || "履歴なし";
+            let table = "<tr><th>名前</th><th>特性</th></tr>";
+            Object.values(newcomers).forEach(m => {
+                table += `<tr><td>${m.n}</td><td>${m.f}</td></tr>`;
+            });
+            document.getElementById('newcomer-table').innerHTML = table;
+            document.getElementById('admin-info').style.display = 'block';
         }
     }
 </script>
