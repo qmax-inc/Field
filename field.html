@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-MAX 人間道場：自己フィールド認定テスト</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --qmax-blue: #1e3a5f;
+            --qmax-orange: #f39c12;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, var(--qmax-blue), #2c5282);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .motto {
+            font-size: 1rem;
+            margin-top: 0.8rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        .container {
+            max-width: 800px;
+            margin: -1.5rem auto 3rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: none;
+        }
+        .active { display: block !important; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: var(--qmax-blue); border-bottom: 2px solid var(--qmax-orange); padding-bottom: 0.5rem; margin-top: 0; font-size: 1.4rem; }
+        
+        /* 名前選択エリア */
+        .name-selector { margin-top: 1.5rem; text-align: center; }
+        select {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .options { margin-top: 1.5rem; }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1.2rem;
+            margin-bottom: 0.8rem;
+            border: 2px solid #edf2f7;
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        .option-btn:hover {
+            background-color: #ebf8ff;
+            border-color: var(--qmax-orange);
+            transform: translateX(5px);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px double #eee;
+        }
+        .user-name-display { font-size: 1.2rem; color: var(--qmax-orange); font-weight: bold; }
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--qmax-blue);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .result-desc { background: #fdfaf6; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .prescription { border-left: 5px solid var(--qmax-orange); padding-left: 1rem; background: #fff; margin-bottom: 2rem; }
+
+        .btn-primary {
+            background: var(--qmax-orange);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 1.5rem auto;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);
+        }
+        .btn-primary:hover { transform: scale(1.03); opacity: 0.9; }
+
+        footer { text-align: center; color: #718096; padding: 2rem; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>人間道場：自己フィールド認定テスト</h1>
+    <p class="motto">「実るほど頭を垂れる稲穂かな」</p>
+</header>
+
+<div class="container">
+    <!-- ステップ0：名前選択 -->
+    <div id="step-name" class="card active">
+        <h2>修練を始める前に</h2>
+        <p>あなたの名前を選択してください。このテストは自分自身の「考え方の癖」を直視するための修行です。</p>
+        <div class="name-selector">
+            <select id="employee-list">
+                <option value="" disabled selected>名前を選択してください</option>
+                <!-- リスト開始 -->
+                <option>吉武 直志</option><option>髙瀬 悠二</option><option>石井 祥太</option><option>宝満 勇蔵</option><option>西村 ひとみ</option>
+                <option>張 宝俊</option><option>西寺 舞</option><option>中山 好成</option><option>山本 祥平</option><option>牟田 理菜</option>
+                <option>岩橋 沙穂里</option><option>三浦 健二</option><option>暁山 拓夢</option><option>大月 駿人</option><option>村上 俊輔</option>
+                <option>森本 努</option><option>小柳 亜衣</option><option>江藤 拓也</option><option>原野 靖之</option><option>山口 伶奈</option>
+                <option>中村 美穂</option><option>バムルンタイ ナタポン</option><option>冨田 翔太</option><option>須堯 淳</option><option>大野 万慧</option>
+                <option>首藤 祐樹</option><option>チュウ シュウビン</option><option>陳 姜瑋</option><option>沈 知燮</option><option>蒲 明基</option>
+                <option>古賀山 翔</option><option>廣門 悟士</option><option>片岡 春泉</option><option>前田 翼</option><option>亀井 結人</option>
+                <option>石田 萌々華</option><option>米須 夕姫</option><option>河瀬 耀子</option><option>安東 なるみ</option><option>佐野 美鈴</option>
+                <option>平尾 拓海</option><option>小林 太一</option><option>松井 未来</option><option>小畑 耀</option><option>日髙 菜々子</option>
+                <option>黄 卓賢</option><option>坂本 雄介</option><option>堀江 梨乃</option><option>ユベール ミカエル</option><option>宮里 使永那</option>
+                <option>浦山 巧</option><option>岡 玲良</option><option>沼田 忠信</option><option>池本 悠河</option><option>喜田 咲楽</option>
+                <option>桂木 乃亜</option><option>夏目 雅矢</option><option>王 藝暁</option><option>福原 奏来</option>
+                <!-- リスト終了 -->
+            </select>
+            <button class="btn-primary" onclick="startTest()">診断を開始する</button>
+        </div>
+    </div>
+
+    <!-- 質問1 -->
+    <div id="q1" class="card">
+        <h2>Q1：後輩が同じミスをした時のあなたの脳内は？</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextStep(1, 'B')">またか…最悪だ。私が謝りに行かなきゃ。</button>
+            <button class="option-btn" onclick="nextStep(1, 'A')">怒ったら嫌われるかな。傷つけたくないな。</button>
+            <button class="option-btn" onclick="nextStep(1, 'C')">普通、メモ取るでしょ。なんでできないの？</button>
+            <button class="option-btn" onclick="nextStep(1, 'D')">説明する時間が無駄。自分でやるのが早い。</button>
+            <button class="option-btn" onclick="nextStep(1, 'E')">ミスは本人の選択の結果。事実を分析しよう。</button>
+            <button class="option-btn" onclick="nextStep(1, 'F')">これは彼が考え方を磨く絶好のチャンスだ。</button>
+        </div>
+    </div>
+
+    <!-- 質問2 -->
+    <div id="q2" class="card">
+        <h2>Q2：会社から新しい評価制度が導入された。あなたの本音は？</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextStep(2, 'A')">みんなが納得してるなら波風立てずに合わせる。</button>
+            <button class="option-btn" onclick="nextStep(2, 'B')">ハードルが上がる…。自分はやっていけるかな。</button>
+            <button class="option-btn" onclick="nextStep(2, 'C')">基準を満たさない人間は淘汰されて当然だ。</button>
+            <button class="option-btn" onclick="nextStep(2, 'D')">業務の成果に直結しない制度は非効率だ。</button>
+            <button class="option-btn" onclick="nextStep(2, 'E')">この制度を使って自分の人生をどう豊かにできるだろうか。</button>
+            <button class="option-btn" onclick="nextStep(2, 'F')">この制度の意図を汲み取り、後輩が納得できる形に翻訳して伝えよう。</button>
+        </div>
+    </div>
+
+    <!-- 質問3 -->
+    <div id="q3" class="card">
+        <h2>Q3：多忙な時に後輩から「教えてください」と相談されたら？</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextStep(3, 'A')">断ると嫌われるから、無理してでも今教える。</button>
+            <button class="option-btn" onclick="nextStep(3, 'B')">教えないと後で不満を抱かれる。困ったな。</button>
+            <button class="option-btn" onclick="nextStep(3, 'C')">自分で調べれば？ それぐらいの主体性は持ってほしい。</button>
+            <button class="option-btn" onclick="nextStep(3, 'D')">手順書を渡すから読んでおいて。それ以外は後で聞く。</button>
+            <button class="option-btn" onclick="nextStep(3, 'E')">15分自分で調べて、今の時刻から1時間後に仮説を持ってきて。</button>
+            <button class="option-btn" onclick="nextStep(3, 'F')">今の彼なら全部教えず、重要となるポイントだけ教えよう。</button>
+        </div>
+    </div>
+
+    <!-- 質問4 -->
+    <div id="q4" class="card">
+        <h2>Q4：会議で、後輩から自分の意見に「反対」された時の反応は？</h2>
+        <div class="options">
+            <button class="option-btn" onclick="finishTest('A')">嫌な思いをさせたかな。私の言い方が悪かったかもしれない。</button>
+            <button class="option-btn" onclick="finishTest('B')">否定されるなんてショックだ。もう発言したくない。</button>
+            <button class="option-btn" onclick="finishTest('C')">私の経験が正しい。君はまだ何も分かっていない。</button>
+            <button class="option-btn" onclick="finishTest('D')">感情論はどうでもいい。データだけで話をしよう。</button>
+            <button class="option-btn" onclick="finishTest('E')">面白い視点だ。その意見をどう成果に繋げられるか検討しよう。</button>
+            <button class="option-btn" onclick="finishTest('F')">反対意見が出るのは良い組織。もっと議論を深めていこう。</button>
+        </div>
+    </div>
+
+    <!-- 結果表示 -->
+    <div id="result" class="card">
+        <div class="result-header">
+            <span class="user-name-display" id="display-name"></span> さんの診断結果
+        </div>
+        <div id="result-title" class="result-title"></div>
+        <div class="result-desc">
+            <p id="result-status"></p>
+        </div>
+        <div class="prescription">
+            <h3>【人間道場の処方箋】</h3>
+            <p id="result-prescription"></p>
+        </div>
+        <button class="btn-primary" onclick="location.reload()">もう一度診断する</button>
+    </div>
+</div>
+
+<footer>
+    <p>人生・仕事の結果 = 考え方 × 熱意 × 能力</p>
+    <p>&copy; 2026 Q-Max Inc. | Human Dojo Project</p>
+</footer>
+
+<script>
+    var scores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    var selectedName = "";
+
+    function startTest() {
+        var select = document.getElementById('employee-list');
+        if (select.value === "") {
+            alert("修練を始める前に、名前を選択してください。");
+            return;
+        }
+        selectedName = select.value;
+        document.getElementById('step-name').classList.remove('active');
+        document.getElementById('q1').classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function nextStep(currentNum, type) {
+        scores[type]++;
+        document.getElementById('q' + currentNum).classList.remove('active');
+        document.getElementById('q' + (currentNum + 1)).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function finishTest(lastType) {
+        scores[lastType]++;
+        document.getElementById('q4').classList.remove('active');
+        
+        var maxType = 'A';
+        var maxVal = -1;
+        for (var key in scores) {
+            if (scores[key] > maxVal) {
+                maxVal = scores[key];
+                maxType = key;
+            }
+        }
+
+        var data = {
+            A: {
+                title: "チワワフィールド（迎合・依存）",
+                status: "あなたは今、「嫌われたくない」という思いが強すぎて、指導が曖昧になっています。後輩を甘やかす『小善』は、結果的に後輩を不幸にします。",
+                prescription: "嫌われる勇気を持ちましょう。それはあなたの我儘ではなく、相手の成長（大善）のためです。役割としての判断を優先してください。"
+            },
+            B: {
+                title: "うさぎフィールド（不安・悲観）",
+                status: "あなたは今、「不安」が行動のブレーキになっています。自分が被害者のように感じやすく、周囲のモチベーションを無意識に下げているリスクがあります。",
+                prescription: "『事実』と『感情』を分けましょう。最悪を想像する前に、2ヶ月後の理想の姿を描き、今日の一手に集中してください。"
+            },
+            C: {
+                title: "ハリネズミフィールド（正論・攻撃）",
+                status: "あなたは今、自分の基準を『普通』と考え、相手を見下す『優劣』で物事を測っています。指導がただの攻撃になっています。",
+                prescription: "正論は相手を倒す武器ではなく、道を作る道具です。『なんでできない』を『どうすればできる』というライオンの視座に変えましょう。"
+            },
+            D: {
+                title: "社会性に欠けるねこ（独善・断絶）",
+                status: "あなたは合理的で優秀ですが、他者への配慮を『無駄』として切り捨てています。孤立し、チームの力を最大化できていません。",
+                prescription: "『共有・配慮』は仕事の高度な技術だと割り切り、仕組みとして実行しましょう。後輩の思考を育てる余裕を持ってください。"
+            },
+            E: {
+                title: "ねこフィールド（自律・客観）",
+                status: "あなたは自律ができており、自分の人生を自分の責任で楽しんでいます。0点付近の不満に同調しない強い軸を持っています。",
+                prescription: "十分優秀ですが、一人で完結しがちです。次は『他者の人生の点数を上げる』というライオンへのステージアップを目指しましょう。"
+            },
+            F: {
+                title: "ライオンフィールド（成熟・育成）",
+                status: "素晴らしい！ あなたは認定：【理想的先輩】です。常に30手先を読み、大善を追求しています。",
+                prescription: "その背中を後輩に見せ続けてください。後輩が自分を超えていくことを最大の喜びにし、共に学び続けていきましょう。"
+            }
+        };
+
+        document.getElementById('display-name').innerText = selectedName;
+        document.getElementById('result-title').innerText = data[maxType].title;
+        document.getElementById('result-status').innerText = data[maxType].status;
+        document.getElementById('result-prescription').innerText = data[maxType].prescription;
+        document.getElementById('result').classList.add('active');
+        window.scrollTo(0,0);
+    }
+</script>
+
+</body>
+</html>
