@@ -30,11 +30,11 @@
         .admin-section { margin-top: 5rem; padding: 2rem; border-top: 1px dashed #ccc; text-align: center; }
         .admin-btn { background: #718096; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; margin: 5px; }
         
-        /* カルテ表示用スタイル */
         .member-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 2rem; }
         .member-btn { background: #fff; border: 2px solid var(--qmax-blue); color: var(--qmax-blue); padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .member-btn:hover { background: var(--qmax-blue); color: #fff; }
         .eval-card { display: none; text-align: left; margin-top: 2rem; border-top: 2px solid #eee; padding-top: 2rem; }
+        .feature-box { background: #ebf8ff; border: 1px solid #90cdf4; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
         .problem-box { background: #fffaf0; border: 1px solid #fbd38d; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
         .solution-box { background: #f0fff4; border: 1px solid #9ae6b4; padding: 15px; border-radius: 8px; }
     </style>
@@ -82,32 +82,33 @@
         <button class="btn-primary" style="margin-top:3rem;" onclick="location.reload()">もう一度診断する</button>
     </div>
 
-    <!-- 評価カルテ（リーダー用） -->
+    <!-- 評価カルテ -->
     <div id="evaluation-page" class="card">
         <h2 style="text-align:center;">新人評価カルテ（リーダー専用）</h2>
-        <p style="text-align:center; font-size:0.9rem;">名前を選択して、詳細なマネジメント指針を確認してください。</p>
         <div class="member-grid" id="member-list-grid"></div>
         
         <div id="member-eval-detail" class="eval-card">
-            <h3 id="eval-name" style="color:var(--qmax-orange); font-size:1.5rem; margin-bottom:0;"></h3>
-            <p id="eval-field" style="font-weight:bold; margin-bottom:1.5rem;"></p>
+            <h3 id="eval-name" style="color:var(--qmax-orange); font-size:1.5rem; margin-bottom:0.5rem;"></h3>
+            <p id="eval-field" style="font-weight:bold; margin-bottom:1.5rem; color:#4a5568;"></p>
             
-            <div class="result-section-title">仕事中に出そうな問題点（想定されるリスク）</div>
+            <div class="result-section-title">本人の資質・特徴（強み）</div>
+            <div id="eval-characteristics" class="feature-box" style="white-space:pre-wrap;"></div>
+
+            <div class="result-section-title">仕事中に出そうな問題点（想定リスク）</div>
             <div id="eval-problems" class="problem-box" style="white-space:pre-wrap;"></div>
             
-            <div class="result-section-title">リーダーの対応方法（大善の指導指針）</div>
+            <div class="result-section-title">リーダーの対応方法（指導指針）</div>
             <div id="eval-solution" class="solution-box" style="white-space:pre-wrap;"></div>
             
-            <button class="btn-primary" style="margin-top:2rem;" onclick="hideEvalDetail()">名前一覧に戻る</button>
+            <button class="btn-primary" style="margin-top:2rem;" onclick="hideEvalDetail()">一覧に戻る</button>
         </div>
     </div>
 
-    <!-- 管理者エリア -->
+    <!-- 管理者 -->
     <div class="admin-section">
         <button class="admin-btn" onclick="openEvaluations()">新人評価カルテを開く</button>
-        <button class="admin-btn" onclick="unlockAdmin()">履歴・ロジック確認</button>
+        <button class="admin-btn" onclick="unlockAdmin()">履歴確認</button>
         <div id="admin-content" style="display:none; margin-top:2rem;">
-            <h3>実施履歴</h3>
             <div id="history-list" style="text-align:left; background:#fff; padding:1rem; border-radius:8px; border:1px solid #ddd; max-height:200px; overflow-y:auto;"></div>
         </div>
     </div>
@@ -121,48 +122,56 @@
         { q: "Q1：後輩が同じミスをした時のあなたの脳内は？", o: { B: "またか…最悪だ。私が謝りに行かなきゃ。", A: "怒ったら嫌われるかな。傷つけたくないな。", C: "普通、メモ取るでしょ。なんでできないの？", D: "説明する時間が無駄。自分でやるのが早い。", E: "ミスは本人の選択。事実を分析しよう。", F: "これは彼が考え方を磨く絶好のチャンスだ。" } },
         { q: "Q2：新しい評価制度が導入された。あなたの本音は？", o: { A: "みんなが納得してるなら波風立てずに合わせる。", B: "ハードルが上がる…。自分はやっていけるかな。", C: "基準を満たさない人間は淘汰されて当然だ。", D: "業務に関係ない制度は非効率。勝手にすればいい。", E: "この制度を使って人生をどう豊かにできるだろうか。", F: "制度の意図を汲み取り、後輩に納得できる形で翻訳しよう。" } },
         { q: "Q3：多忙な時に後輩から「教えてください」と相談されたら？", o: { A: "断ると嫌われるから、無理してでも今教える。", B: "教えないと後で不満を抱かれる、困ったな。", C: "自分で調べれば？ それぐらいの主体性は持ってほしい。", D: "手順書を投げるから読んで。それ以外は後で。", E: "15分自分で調べて、1時間後に仮説を持ってきて。", F: "今の彼なら全部教えず、重要ポイントだけ教えよう。" } },
-        { q: "Q4：会議で、後輩から自分の意見に「反対」された時の反応は？", o: { A: "嫌な思いさせたかな。私の言い方が悪かったか。", B: "否定されるなんてショック。もう発言したくない。", C: "私の経験が正しい。君はまだ何も分かっていない。", D: "感情論はどうでもいい。データだけで話をしよう。", E: "面白い視点だ。成果に繋げられるか検討しよう。", F: "反対が出るのは良い組織。もっと議論を深めよう。" } },
+        { q: "Q4：会議で、後輩から自分の意見に「反対」された時の反応は？", o: { A: "嫌な思いさせたかな。私の言い方が悪かったか。", B: "否定されるなんてショック。もう発言したくない。", C: "私の経験が正しい。君はまだ何も分かっていない。", D: "感情論はどうでもいい。データだけで話をしよう。", E: "面白い視点だ。成果に繋げるか検討しよう。", F: "反対が出るのは良い組織。もっと議論を深めよう。" } },
         { q: "Q5：締切直前、後輩の作業が大幅に遅れている。後輩は「自分でやりたい」と言うが間に合わない。どうする？", o: { A: "彼の気持ちを尊重し、一緒に残業して手伝う。", B: "どうしよう、間に合わなかったら私の責任だ…と焦る。", C: "「だから言っただろ！」と叱り、力ずくで終わらせる。", D: "「もういい」と突き放し、自分が全部巻き取って完遂させる。", E: "論理的に「間に合わない事実」を突きつけ、作業を分割する。", F: "最優先の『センターピン』を特定し、そこだけ彼に完遂させる。" } },
-        { q: "Q6：後輩が会社の方針に不満を漏らしている。信頼関係を築くための対応は？", o: { A: "「君の気持ちはよく分かるよ」と全力で同調する。", B: "不満を聞いて、自分も不安になってしまう。", C: "「決まりなんだから四の五の言うな」と一蹴する。", D: "「不満があるなら外で試せばいい」と突き放す。", E: "「不満は自由だが、この環境でどう動くか」を冷静に話す。", F: "不満の奥にある期待を汲み取り、長期的な『大善』を説く。" } },
+        { q: "Q6：後輩が会社の方針に不満を漏らしている。信頼関係を築くための対応は？", o: { A: "「君の気持ちはよく分かるよ」と全力で同調する。", B: "不満を聞いて、自分も不安になってしまう。", C: "「決まりなんだから四の五の言うな」と一蹴する。", D: "「不満があるなら外で試せばいい」と突き放す。", E: "「不満は自由だが、この環境でどう動かか」を冷静に話す。", F: "不満の奥にある期待を汲み取り、長期的な『大善』を説く。" } },
         { q: "Q7：後輩が「AとBどちらが正解ですか？」と答えを求めてきた。", o: { A: "彼が迷わないよう、すぐに「Aだよ」と教えてあげる。", B: "自分も迷ってしまい「どっちだろうね」と一緒に悩む。", C: "「それぐらい自分で考えろ」と突き放す。", D: "「論理的にはAだ」と最短ルートの回答だけ渡す。", E: "「君の人生の選択だ。自分で決めて責任を取れ」と促す。", F: "あえて答えず「2ヶ月後の理想から見て、どちらがセンターピンかな？」と問う。" } },
         { q: "Q8：後輩が同じミスを繰り返した。イラ立ちを覚えた時の行動は？", o: { A: "自分の感情を押し殺し、より優しく接しようとする。", B: "あからさまに落胆し、無言の圧力をかけてしまう。", C: "怒りに任せて「何度言えば分かるんだ！」と詰める。", D: "感情を完全にシャットアウトし、事務的な修正だけ行う。", E: "イラ立ちをメタ認知し、ミスの根本原因をデータで分析する。", F: "怒りを自覚した上で、あえて厳しく「君の市場価値」について説く。" } },
         { q: "Q9：自分が後輩の前で重大な判断ミスをしてしまった。どう振る舞う？", o: { A: "全力で謝罪し、汚名返上のために後輩の仕事まで引き受ける。", B: "権威が傷つくのを恐れ、なんとか理由をつけて正当化する。", C: "「環境が悪かった」「指示が曖昧だった」と他責にする。", D: "ミスを無かったことにし、速やかに次のタスクへ移動する。", E: "淡々とミスを報告し、修正プランを論理的に提示する。", F: "非を認め「今の私はハリネズミ的だった」とメタ認知を共有する。" } },
-        { q: "Q10：情報共有を「無駄」だと言う後輩をどう指導する？", o: { A: "「みんな困るから」と、情に訴えてお願いする。", B: "「共有してくれないと私も困る」と泣きつく。", C: "「共有しないなら評価を下げる」と脅す。", D: "「共有しないなら君一人で完結させろ」と孤立させる。", E: "「共有は情報の同期コストだ」と効率の面から説明する。", F: "「共有はチームを止めないための高度な技術だ」と定義を書き換える。" } }
+        { q: "Q10：技術は高いが情報共有を「無駄」だと言う後輩をどう指導する？", o: { A: "「みんな困るから」と、情に訴えてお願いする。", B: "「共有してくれないと私も困る」と泣きつく。", C: "「共有しないなら評価を下げる」と脅す。", D: "「共有しないなら君一人で完結させろ」と孤立させる。", E: "「共有は情報の同期コストだ」と効率の面から説明する。", F: "「共有はチームを止めないための高度な技術だ」と定義を書き換える。" } }
     ];
 
     const fieldData = {
-        B: { badge: "🐰", title: "うさぎフィールド", features: "悲観的・不安・自己防衛", failures: "場の空気を下げる・判断回避", measures: "事実と感情を分ける・安心材料を渡す", ng: "❌NG: 「正直、この先どうなるか不安だよね…」", ok: "⭕OK: 「不安な点はあるけど、まずは整理しましょう」" },
-        A: { badge: "🐶", title: "チワワフィールド", features: "迎合・承認欲求・他者依存", failures: "指導の曖昧化・役割の崩壊", measures: "役割としての判断を優先・一貫性を持つ", ng: "❌NG: 「まあ、君の好きなやり方でいいよ」", ok: "⭕OK: 「今回はこの基準で進めてほしい。理由は〜」" },
-        C: { badge: "🦔", title: "ハリネズミフィールド", features: "攻撃・正論・優越感", failures: "見下し・優劣の確認", measures: "成長の過程を見る・言語化共有・強さより支援", ng: "❌NG: 「え、前にも言ったよね？なんでできないの？」", ok: "⭕OK: 「全体としては良くなっている。次はここを直そう」" },
-        D: { badge: "🐈", title: "社会性に欠けるねこ", features: "孤立・合理的独善・配慮欠如", failures: "情報断絶・メリット優先", measures: "配慮は仕事の技術・周囲を動かす自覚", ng: "❌NG: 「特に言われてなかったので、共有してません」", ok: "⭕OK: 「チームのために念のため共有しますね」" },
-        E: { badge: "🐈", title: "ねこフィールド", features: "自律・論理的・個人主義", failures: "戸惑いを拾わない・説明省略", measures: "相手がどう感じるかを考慮・対話の余地", ng: "❌NG: 「自分は整理できてるからこの方針でいくね」", ok: "⭕OK: 「自分はこう考えたが、君はどこが引っかかる？」" },
-        F: { badge: "🦁", title: "ライオンフィールド", features: "成熟・謙虚・育成・協働", failures: "自己完結・慢心（稀）", measures: "30手先を読む大善・謙虚な背中", ng: "❌NG: 「自分でやった方が早いから、もういいよ」", ok: "⭕OK: 「ここは任せたい。途中で一緒に確認しよう」" }
+        B: { badge: "🐰", title: "うさぎフィールド", features: "悲観的・不安・自己防衛", failures: "場の空気を下げる・判断回避", measures: "事実と感情を分ける・安心材料を渡す", ng: "❌NG: 「正直、先が見えなくて不安だよね…」", ok: "⭕OK: 「不安な点はあるけど、整理して進めましょう」" },
+        A: { badge: "🐶", title: "チワワフィールド", features: "迎合・承認欲求・他者依存", failures: "指導の曖昧化・役割の崩壊", measures: "役割としての判断を優先・一貫した態度", ng: "❌NG: 「君のやりやすい方でいいよ」", ok: "⭕OK: 「この基準で進めてほしい。理由は〜」" },
+        C: { badge: "🦔", title: "ハリネズミフィールド", features: "攻撃・正論・優越感", failures: "見下し・優劣の確認", measures: "過程を見る・言語化共有・強さより支援", ng: "❌NG: 「前にも言ったよね？なんでできないの？」", ok: "⭕OK: 「全体は良くなっている。この1点を直そう」" },
+        D: { badge: "🐈", title: "社会性に欠けるねこ", features: "孤立・合理的独善・配慮欠如", failures: "情報断絶・メリット優先", measures: "配慮は仕事の技術・周囲を動かす自覚", ng: "❌NG: 「特に言われてなかったので共有してません」", ok: "⭕OK: 「念のため共有します。今の状況は〜」" },
+        E: { badge: "🐈", title: "ねこフィールド", features: "自律・論理的・個人主義", failures: "戸惑いを拾わない・説明省略", measures: "相手の感情を考慮・対話の余地", ng: "❌NG: 「自分は整理できてるからこの方針でいくね」", ok: "⭕OK: 「自分はこう考えたが違和感はある？」" },
+        F: { badge: "🦁", title: "ライオンフィールド", features: "成熟・謙虚・育成・協働", failures: "自己完結・慢心（稀）", measures: "30手先を読む大善・謙虚な見本", ng: "❌NG: 「自分でやった方が早いからいいよ」", ok: "⭕OK: 「ここは任せたい。途中で確認しよう」" }
     };
 
     const newcomers = [
         { id: "eval_oka", n: "岡 玲良", f: "🦁 ライオン (次世代リーダー候補)", 
+          c: "圧倒的な当事者意識と利他心を持つ。合宿1位。他社の参加者を鼓舞するなど、自分の仕事を超えて「場」を良くするエネルギーは新人随一。",
           p: "・Q5(締切遅れ): 責任感が強すぎるあまり「自分がやった方が早い」と独走し、組織のルールを追い越して事故を起こすリスク。\n・Q8(ミスへの怒り): 相手の成長を願うあまり、自身の負の感情のコントロールが課題になる可能性。",
           s: "「仕組みを使いこなすリーダー」への脱皮を。Q8-F(感情のメタ認知と市場価値の提示)をリーダーが手本で見せ、熱意を組織の武器(ルール)に乗せる技術を伝えてください。" },
         { id: "eval_miya", n: "宮里 使永那", f: "🐈 社会性に欠けるねこ (高スペック個人主義)", 
-          p: "・Q1(ミスへの脳内): 「説明する時間が無駄」と判断し、周囲にナレッジを共有しない。\n・Q10(共有拒否): 共有を単なるコストと捉え、チームのリスク管理を軽視する。",
+          c: "スキルテスト86点の天才肌。エンジニア素養も高く、個人の処理能力は極めて優秀。一見「良い子」に見えるが、本質は徹底したマイペース。",
+          p: "・Q1(ミスへの脳内): 「説明する時間が無駄、自分でやるのが早い」と判断し、周囲にナレッジを共有しない。\n・Q10(共有拒否): 共有を単なるコストと捉え、チームのリスク管理を軽視する。進捗のブラックボックス化。",
           s: "能力への甘やかしは厳禁です。Q10-F(共有は高度な技術)と定義を書き換えさせ、独走ではなく「チームの合理性」への貢献を業務要件として厳しく求めてください。" },
         { id: "eval_natsu", n: "夏目 雅矢", f: "🦔 ハリネズミ (論理的攻撃者)", 
-          p: "・Q4(反対への反応): 他人の意見を論破し、心理的安全性を破壊するリスク。\n・Q8(ミスへの怒り): 感情を爆発させて相手を詰め、周囲を萎縮させる。",
+          c: "論理的思考力と突破力が随一。数学的思考に強く、独力で課題を解決する能力が高い。目的達成への執着が非常に強い。",
+          p: "・Q4(反対への反応): 会議で他人の意見を遮って論破し、チームの心理的安全性を破壊するリスク。\n・Q8(ミスへの怒り): 感情を爆発させて相手を詰め、周囲を萎縮させる。プライドが高く他責に振れやすい。",
           s: "「実るほど頭を垂れる稲穂かな」を徹底。論理を勝つためではなく協力するために使うよう、発言前に「これは誰を幸せにするか？」を問いかけるメタ認知の修練を。" },
         { id: "eval_katsu", n: "桂木 乃亜", f: "🐰 うさぎ (不安ベースの努力家)", 
-          p: "・Q4(反対への反応): 否定されるとショックを受け、殻に閉じこもって発言を止めてしまう。\n・Q9(自分のミス): 失敗を認めるのが怖くて、権威を守るために正当化や言い訳に走る。",
+          c: "真面目で献身的。感謝を忘れず、率先行動（切符購入や荷物整理など）や傾聴姿勢が素晴らしく、組織の潤滑油となる資質がある。",
+          p: "・Q4(反対への反応): 否定されるとショックを受け、殻に閉じこもって発言を止めてしまう。\n・Q9(自分のミス): 失敗を認めるのが怖くて、権威を守るために正当化や言い訳に走る。論理が詰まると根性論に逃げる癖。",
           s: "「未完成であることへの受容」を。リーダー自身がQ9-F(自分のミスをメタ認知して共有)する姿を見せ、失敗は学びの素材であることを体感させてください。" },
         { id: "eval_kida", n: "喜田 咲楽", f: "🐶 チワワ (潜在的PM・自信欠如)", 
-          p: "・Q3(多忙な相談): 断ると嫌われるのを恐れて無理を引き受け、パンクする。\n・Q7(答えを求める): 判断力があるのに「正解」を求めて上司に依存してしまう。",
+          c: "全体最適を見抜く思考力は92点（最高値）。客観的で、声の大きい意見に惑わされずに本質的な答えを導き出す力がある。",
+          p: "・Q3(多忙な相談): 断ると嫌われるのを恐れて無理を引き受け、パンクする。\n・Q7(答えを求める): 答えを持っているのに「正解」を求めて上司に依存してしまう。消極的な「小善」の沈黙。",
           s: "「役割としての判断」を徹底。Q7-Fのように「センターピンはどれか？」と問い返し、自分の思考でチームを導く成功体験を積ませ、ライオンへ引き上げます。" },
         { id: "eval_ike", n: "池本 悠河", f: "🐈 ねこ (合理的・個人主義)", 
-          p: "・Q3(多忙な相談): 15分ルール(E:ねこ)だけで突き放し、冷たい印象を与える。\n・Q6(方針への不満): 不満を漏らす仲間に正論だけで返し、チームの溝を深める。",
+          c: "積極性とスピードがあり、物事をデータで測る冷静さを持つ。エンジニア素養も高く、自分の人生のハンドルをしっかり握っている自律型。",
+          p: "・Q3(多忙な相談): 15分ルールだけで突き放し、冷たい印象を与える。泥臭い人間関係の調整を非合理として軽視する。\n・Q6(方針への不満): 不満を漏らす仲間に正論だけで返し、チームの溝を深める。",
           s: "「配慮という技術」の習得を。合理的な彼には「相手の感情を計算に入れることが同期コストを最小化する(Q10-F)」というメリット面から説得し、協働の価値を学習させます。" },
         { id: "eval_fuku", n: "福原 奏来", f: "🐶 チワワ (視野の広い調整役)", 
-          p: "・Q2(新制度): 自分の考えを持たず波風立てずに合わせる受動的な態度。\n・Q5(締切遅れ): 本質解決ではなく「一緒に頑張る」という気合に逃げ、遅れを隠蔽するリスク。",
+          c: "コミュニケーション能力が高く、周囲の疲労や関係性に気づける視野の広さがある。進行管理A評価で、バランス感覚に優れる。",
+          p: "・Q2(新制度): 自分の考えを持たず波風立てずに合わせる受動的な態度。\n・Q5(締切遅れ): 本質解決ではなく「なんとかなる」と楽観視し、ミスを自分都合の良い計算で隠蔽するリスク。",
           s: "「当事者意識(ハンドルを握る)」の強化。優しさを迎合にせず、Q6-F(長期的な大善)のために今何をすべきか、逆算思考でセンターピンを特定させる訓練を。" },
         { id: "eval_ou", n: "王 藝暁", f: "🐈 社会性に欠けるねこ × 🐰 うさぎ", 
-          p: "・Q1(ミスへの脳内): ミスが起きても事実分析のみ。周囲への影響や感情フォローを行わない。\n・Q10(共有拒否): 「言われていないから」と放置し、サイロ化を加速させる。",
+          c: "高い分析力と手元の情報を綺麗に構造化する能力を持つ。鋭い観察眼があり、他人の気配りに気づく繊細さも合わせ持つ。",
+          p: "・Q1(ミスへの脳内): ミスが起きても事実分析のみ。周囲への影響や感情フォローを行わない。指示待ちの「消費者の視点」。\n・Q10(共有拒否): 「言われていないから」と放置し、サイロ化を加速させる。自己完結の没入癖。",
           s: "「アラート発信の義務化」。沈黙はチームへの攻撃であると伝え、周囲を巻き込むことをQ5-F(センターピン)として定義し、外向きのエネルギーを強制的に引き出します。" }
     ];
 
@@ -219,7 +228,6 @@
             document.getElementById('quiz-container').innerHTML = "";
             document.getElementById('result').classList.remove('active');
             document.getElementById('evaluation-page').classList.add('active');
-            
             const grid = document.getElementById('member-list-grid');
             grid.innerHTML = newcomers.map(m => `<button class="member-btn" onclick="showMemberEval('${m.id}')">${m.n}</button>`).join('');
             window.scrollTo(0, 0);
@@ -230,6 +238,7 @@
         const m = newcomers.find(x => x.id === id);
         document.getElementById('eval-name').innerText = m.n;
         document.getElementById('eval-field').innerText = "フィールド： " + m.f;
+        document.getElementById('eval-characteristics').innerText = m.c;
         document.getElementById('eval-problems').innerText = m.p;
         document.getElementById('eval-solution').innerText = m.s;
         document.getElementById('member-eval-detail').style.display = 'block';
@@ -245,7 +254,7 @@
         if (prompt("暗証番号") === "20050315manurewa") {
             document.getElementById('admin-content').style.display = 'block';
             var h = JSON.parse(localStorage.getItem('qmax_v5_history') || "[]");
-            document.getElementById('history-list').innerHTML = h.reverse().map(i => `<div>[${i.d}] ${i.n} : ${i.t}</div>`).join('') || "履歴なし";
+            document.getElementById('history-list').innerHTML = h.reverse().map(i => `<div style="padding:5px; border-bottom:1px solid #eee;">[${i.d}] ${i.n} : ${i.t}</div>`).join('') || "履歴なし";
         }
     }
 </script>
