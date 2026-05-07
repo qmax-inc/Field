@@ -211,7 +211,7 @@
     }
 
     function openCriteria() {
-        if (prompt("暗証番号") === "20050315manurewa") {
+        if (prompt("暗証番号") === "000") {
             let html = ""; const fieldNames = { A: "🐶チワワ", B: "🐰うさぎ", C: "🦔ハリネズミ", D: "🐈社欠", E: "🐈ねこ", F: "🦁ライオン" };
             questions.forEach((q, i) => {
                 html += `<div style="margin-bottom:2rem;"><h4 style="background:#1e3a5f; color:white; padding:8px;">${q.q}</h4><table>`;
@@ -224,7 +224,7 @@
     }
 
     function openAdminData() {
-        if (prompt("暗証番号") === "20050315manurewa") {
+        if (prompt("暗証番号") === "000") {
             let gridHtml = "";
             Object.keys(newcomers).forEach(key => { gridHtml += `<button class="member-btn" onclick="showAdminMemberDetail('${key}')">${newcomers[key].n}</button>`; });
             document.getElementById('admin-member-grid').innerHTML = gridHtml;
